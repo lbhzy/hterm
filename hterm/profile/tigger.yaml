@@ -1,0 +1,6 @@
+- name: 发送文本
+  pattern: "hello"
+  action: send text
+  text: ok
+
+- name: 执行脚本

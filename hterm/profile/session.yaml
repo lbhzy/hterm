@@ -1,0 +1,16 @@
+- name: openwrt
+  type: ssh
+  target: 10.10.10.1
+  port: 22
+  username: root
+  password: '8822185'
+
+- name: N10
+  type: serial
+  target: COM1
+  baudrate: 115200
+
+- name: powershell
+  type: local
+  target: powershell
+
