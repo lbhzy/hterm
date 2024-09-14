@@ -5,10 +5,10 @@ from PySide6.QtWidgets import *
 import qtawesome as qta
 
 from ui.form_ui import Ui_MainWindow
-from terminal import SSHTerm
-from terminal import LocalTerm
-from terminal import SerialTerm
 from common.config import Config
+from terminal.ssh_terminal import SSHTerm
+from terminal.local_terminal import LocalTerm
+from terminal.serial_terminal import SerialTerm
 
 
 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     app = QApplication()
 
-    app.setStyle("fusion")
+    # app.setStyle("fusion")
     font = QFont()
     font.setFamilies(["Consolas", "Microsoft YaHei UI"])
     font.setPointSize(10)  # 设置字体大小

@@ -2,7 +2,7 @@ from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 
-from .color import Color
+from color import Color
 
 class Highlighter(QSyntaxHighlighter):
     """ 语法高亮器 """

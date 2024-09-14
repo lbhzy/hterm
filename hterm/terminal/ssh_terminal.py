@@ -4,7 +4,7 @@ from PySide6.QtWidgets import *
 
 import time
 import paramiko
-from .terminal import Terminal
+from terminal import Terminal
 
 
 class SSHTerm(Terminal):

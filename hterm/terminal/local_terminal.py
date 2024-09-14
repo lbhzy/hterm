@@ -2,7 +2,7 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
-from .terminal import Terminal
+from terminal import Terminal
 
 import time
 from winpty import PtyProcess

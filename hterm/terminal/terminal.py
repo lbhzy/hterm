@@ -8,9 +8,9 @@ import winsound
 import pyfiglet
 import qtawesome as qta
 
-from .vt100 import *
-from .color import Color
-from .highlight import Highlighter
+from vt100 import *
+from color import Color
+from highlight import Highlighter
 
 
 class Terminal(QTextEdit, Color, VT100Paser):
