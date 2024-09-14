@@ -2,13 +2,20 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
+import os
+import sys
+ROOT_DIR = os.path.dirname(__file__)
+ROOT_DIR = os.path.dirname(sys.argv[0])
+print(ROOT_DIR)
+sys.path.append(os.path.join(ROOT_DIR, 'terminal'))
+sys.path.append(os.path.join(ROOT_DIR, 'common'))
 import qtawesome as qta
 
 from ui.form_ui import Ui_MainWindow
 from common.config import Config
-from terminal.ssh_terminal import SSHTerm
-from terminal.local_terminal import LocalTerm
-from terminal.serial_terminal import SerialTerm
+from terminal.terminal_ssh import SSHTerm
+from terminal.terminal_local import LocalTerm
+from terminal.terminal_serial import SerialTerm
 
 
 

@@ -2,9 +2,11 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
-from terminal import Terminal
 import time
 import serial
+
+from terminal_base import Terminal
+
 
 class SerialTerm(Terminal):
     """ 串口终端 """
