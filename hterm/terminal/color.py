@@ -1,4 +1,5 @@
 import os
+import sys
 import yaml
 
 class Color():
@@ -8,7 +9,11 @@ class Color():
 
         self.scheme = {}
         self.schemes = []
-        self.schemes_dir = f"{os.path.dirname(__file__)}/schemes/"
+        if getattr(sys, 'frozen', False):
+            base_dir = os.path.dirname(sys.argv[0])
+        else:
+            base_dir = os.path.dirname(os.path.dirname(__file__))
+        self.schemes_dir = os.path.join(base_dir, "schemes")
 
         self.great_scheme_bright = ["Homebrew Light"]
         self.great_scheme_dark = ["Horizon Dark"]
@@ -27,7 +32,7 @@ class Color():
     def setScheme(self, scheme):
         if not scheme in self.schemes:
             return
-        with open(f'{self.schemes_dir}{scheme}.yml', 'r') as file:
+        with open(os.path.join(self.schemes_dir, f'{scheme}.yml'), 'r') as file:
             scheme_dict = yaml.safe_load(file)
         
         self.scheme.clear()

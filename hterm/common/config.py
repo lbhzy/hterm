@@ -1,12 +1,17 @@
 import os
+import sys
 import yaml
 
 class Config:
     """ 配置文件处理 """
     def __init__(self) -> None:
-        self.dir = f"{os.path.dirname(__file__)}/../profile/"
-        self.session_config = self.dir + "session.yaml"
-        self.treminal_config = self.dir + "terminal.yaml"
+        if getattr(sys, 'frozen', False):
+            base_dir = os.path.dirname(sys.argv[0])
+        else:
+            base_dir = os.path.dirname(os.path.dirname(__file__))
+        self.dir = os.path.join(base_dir, "profile")
+        self.session_config = os.path.join(self.dir, "session.yaml")
+        self.treminal_config = os.path.join(self.dir, "terminal.yaml")
 
     def loadConfig(self):
         with open(self.session_config, 'r') as file:

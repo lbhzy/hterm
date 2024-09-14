@@ -3,6 +3,7 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
 import os
+import sys
 import time
 import winsound
 import pyfiglet
@@ -20,7 +21,11 @@ class Terminal(QTextEdit, Color, VT100Paser):
 
         self.fmt = QTextCharFormat()
         self.pos = [0, 0]
-        self.bg_img = f"{os.path.dirname(__file__)}/images/bg1.jpg"
+        if getattr(sys, 'frozen', False):
+            base_dir = os.path.dirname(sys.argv[0])
+        else:
+            base_dir = os.path.dirname(os.path.dirname(__file__))
+        self.bg_img = os.path.join(base_dir, 'images', 'bg1.jpg')
 
         self.setupUi()
         self.setupSub()
