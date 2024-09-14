@@ -4,12 +4,9 @@ from PySide6.QtWidgets import *
 
 import os
 import sys
-ROOT_DIR = os.path.dirname(__file__)
-ROOT_DIR = os.path.dirname(sys.argv[0])
-print(ROOT_DIR)
-sys.path.append(os.path.join(ROOT_DIR, 'terminal'))
-sys.path.append(os.path.join(ROOT_DIR, 'common'))
 import qtawesome as qta
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'terminal'))
 
 from ui.form_ui import Ui_MainWindow
 from common.config import Config
