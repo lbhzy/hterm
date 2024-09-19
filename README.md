@@ -8,7 +8,7 @@ pip install -r requirements.txt
 ```
 2. 运行
 ``` shell
-python -m main.py
+py main.py
 ```
 
 # 打包
