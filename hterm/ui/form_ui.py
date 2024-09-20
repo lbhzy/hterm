@@ -25,10 +25,10 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(833, 572)
-        self.actionNew = QAction(MainWindow)
-        self.actionNew.setObjectName(u"actionNew")
-        self.action_4 = QAction(MainWindow)
-        self.action_4.setObjectName(u"action_4")
+        self.newSession = QAction(MainWindow)
+        self.newSession.setObjectName(u"newSession")
+        self.setting = QAction(MainWindow)
+        self.setting.setObjectName(u"setting")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.formLayout = QFormLayout(self.centralwidget)
@@ -68,9 +68,9 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menu.menuAction())
-        self.menu.addAction(self.actionNew)
+        self.menu.addAction(self.newSession)
         self.menu.addSeparator()
-        self.menu.addAction(self.action_4)
+        self.menu.addAction(self.setting)
 
         self.retranslateUi(MainWindow)
 
@@ -82,8 +82,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.actionNew.setText(QCoreApplication.translate("MainWindow", u"\u65b0\u5efa\u4f1a\u8bdd", None))
-        self.action_4.setText(QCoreApplication.translate("MainWindow", u"\u8bbe\u7f6e...", None))
+        self.newSession.setText(QCoreApplication.translate("MainWindow", u"\u65b0\u5efa\u4f1a\u8bdd", None))
+        self.setting.setText(QCoreApplication.translate("MainWindow", u"\u8bbe\u7f6e...", None))
 
         __sortingEnabled = self.listWidget.isSortingEnabled()
         self.listWidget.setSortingEnabled(False)

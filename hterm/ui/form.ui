@@ -97,19 +97,19 @@
     <property name="title">
      <string>会话</string>
     </property>
-    <addaction name="actionNew"/>
+    <addaction name="newSession"/>
     <addaction name="separator"/>
-    <addaction name="action_4"/>
+    <addaction name="setting"/>
    </widget>
    <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionNew">
+  <action name="newSession">
    <property name="text">
     <string>新建会话</string>
    </property>
   </action>
-  <action name="action_4">
+  <action name="setting">
    <property name="text">
     <string>设置...</string>
    </property>

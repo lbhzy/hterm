@@ -9,6 +9,7 @@ import qtawesome as qta
 sys.path.append(os.path.join(os.path.dirname(__file__), 'terminal'))
 
 from ui.form_ui import Ui_MainWindow
+from common.quick import QuickDialog
 from common.config import Config
 from terminal.terminal_ssh import SSHTerm
 from terminal.terminal_local import LocalTerm
@@ -26,6 +27,8 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(qta.icon('ph.terminal-window-fill'))
         # self.setWindowIcon(qta.icon('ph.terminal-window-light'))
         self.resize(QGuiApplication.primaryScreen().size()*0.6)
+
+        self.ui.newSession.triggered.connect(lambda: QuickDialog().exec())
         
         self.setWindowTitle("hterm")
         self.ui.tabWidget.setTabsClosable(True)
