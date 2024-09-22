@@ -8,8 +8,9 @@ import qtawesome as qta
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'terminal'))
 
-from ui.form_ui import Ui_MainWindow
+from ui.main_ui import Ui_MainWindow
 from common.quick import QuickDialog
+from common.session import SessionDialog
 from common.config import Config
 from terminal.terminal_ssh import SSHTerm
 from terminal.terminal_local import LocalTerm
@@ -17,41 +18,58 @@ from terminal.terminal_serial import SerialTerm
 
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self):
 
         super().__init__()
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-        self.setWindowIcon(qta.icon('ph.terminal-window-fill'))
-        # self.setWindowIcon(qta.icon('ph.terminal-window-light'))
-        self.resize(QGuiApplication.primaryScreen().size()*0.6)
+        self.setupUi(self)
 
-        self.ui.newSession.triggered.connect(lambda: QuickDialog().exec())
-        
+        # 主窗口设置
         self.setWindowTitle("hterm")
-        self.ui.tabWidget.setTabsClosable(True)
-        self.ui.tabWidget.setStyleSheet("QTabBar::tab { height: 25px; }")
-        self.setWindowOpacity(0.95)
+        self.setWindowIcon(qta.icon('ph.terminal-window-fill'))
+        self.resize(QGuiApplication.primaryScreen().size()*0.7)
+        # self.setWindowOpacity(0.95)
 
-        left_widget = QLabel("🟢就绪")
-        self.ui.statusbar.addWidget(left_widget, 1)  # 左侧信息，权重为 1
+        self.create_session.triggered.connect(lambda: SessionDialog().exec())
 
-        right_widget = QLabel("2024-8-16 0:11")
-        self.ui.statusbar.addWidget(right_widget, 0)  # 右侧信息，权重为 0
+        # 快速命令按钮
+        self.toolButton.setIcon(qta.icon('mdi.speedometer'))
+        self.toolButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.toolButton.clicked.connect(lambda: QuickDialog().exec())
+        
+        self.listWidget.setVisible(False)
+        self.tabWidget.setTabsClosable(True)
+        self.tabWidget.tabCloseRequested.connect(lambda idx: (self.tabWidget.widget(idx).deleteLater(), self.tabWidget.removeTab(idx)))
+        # self.tabWidget.setStyleSheet("QTabBar::tab { height: 25px; }")
+        
+        # 状态栏
+        self.statusbar.setStyleSheet("QStatusBar { padding-bottom: 20px; }")
+        left_widget = QLabel("就绪")
+        self.statusbar.addWidget(left_widget, 1)  # 左侧信息，权重为 1
+        link = QLabel("<a href='https://github.com/lbhzy/hterm'>📬Hterm Repository</a>")
+        link.linkActivated.connect(lambda url: QDesktopServices.openUrl(QUrl(url)))
+        self.statusbar.addWidget(link)
+        # right_widget = QLabel("2024-8-16 0:11")
+        # self.statusbar.addWidget(right_widget, 0)  # 右侧信息，权重为 0
 
         config = Config()
         session_list = config.loadConfig()
-        for item in session_list:
-            self.ui.listWidget.addItem(item['name'])
-            # print(item)
-        cfg = config.getConfigByName("openwrt")
-        self.openSession(cfg)
-        cfg = config.getConfigByName("powershell")
-        self.openSession(cfg)
+        for session in session_list:
+            action = QAction(self)
+            action.setText(session['name'])
+            action.triggered.connect(self.openSession)
+            self.session_menu.addAction(action)
 
-    def openSession(self, cfg):
+        # cfg = config.getConfigByName("openwrt")
+        # self.openSession(cfg)
+        # cfg = config.getConfigByName("powershell")
+        # self.openSession(cfg)
+
+    def openSession(self):
+        name = self.sender().text()
+
+        cfg = Config().getConfigByName(name)
         if cfg['type'] == 'ssh':
             term = SSHTerm(cfg['target'], cfg['port'], cfg['username'], cfg['password'])
         elif cfg['type'] == 'serial':
@@ -66,7 +84,7 @@ class MainWindow(QMainWindow):
         tab.setLayout(layout)
 
         # 将新 tab 添加到 tabWidget
-        self.ui.tabWidget.addTab(term, cfg['target'])
+        self.tabWidget.addTab(term, cfg['target'])
 
 if __name__ == "__main__":
 
@@ -75,7 +93,7 @@ if __name__ == "__main__":
     # app.setStyle("fusion")
     font = QFont()
     font.setFamilies(["Consolas", "Microsoft YaHei UI"])
-    font.setPointSize(10)  # 设置字体大小
+    # font.setPointSize(10)  # 设置字体大小
     app.setFont(font)
 
     w = MainWindow()
