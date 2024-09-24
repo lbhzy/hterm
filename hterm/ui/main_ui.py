@@ -18,8 +18,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QHBoxLayout, QListView, QListWidget,
     QListWidgetItem, QMainWindow, QMenu, QMenuBar,
-    QSizePolicy, QSpacerItem, QSplitter, QStatusBar,
-    QTabWidget, QToolButton, QVBoxLayout, QWidget)
+    QPushButton, QSizePolicy, QSpacerItem, QSplitter,
+    QStatusBar, QTabWidget, QVBoxLayout, QWidget)
+import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -70,10 +71,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.toolButton = QToolButton(self.centralwidget)
-        self.toolButton.setObjectName(u"toolButton")
+        self.pushButton = QPushButton(self.centralwidget)
+        self.pushButton.setObjectName(u"pushButton")
 
-        self.horizontalLayout.addWidget(self.toolButton)
+        self.horizontalLayout.addWidget(self.pushButton)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -129,7 +130,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(whatsthis)
         self.listWidget.setWhatsThis("")
 #endif // QT_CONFIG(whatsthis)
-        self.toolButton.setText(QCoreApplication.translate("MainWindow", u"\u5feb\u901f\u547d\u4ee4", None))
+        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"\u5feb\u901f\u547d\u4ee4", None))
         self.menu.setTitle(QCoreApplication.translate("MainWindow", u"\u4f1a\u8bdd", None))
         self.session_menu.setTitle(QCoreApplication.translate("MainWindow", u"\u6240\u6709\u4f1a\u8bdd", None))
     # retranslateUi

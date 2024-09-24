@@ -7,6 +7,7 @@ import sys
 import qtawesome as qta
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'terminal'))
+sys.path.append(os.path.join(os.path.dirname(__file__), 'ui'))
 
 from ui.main_ui import Ui_MainWindow
 from common.quick import QuickDialog
@@ -26,17 +27,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         # 主窗口设置
-        self.setWindowTitle("hterm")
-        self.setWindowIcon(qta.icon('ph.terminal-window-fill'))
+        self.setWindowTitle("Hterm")
+        self.setWindowIcon(QIcon(':/icon.png'))
         self.resize(QGuiApplication.primaryScreen().size()*0.7)
         # self.setWindowOpacity(0.95)
 
         self.create_session.triggered.connect(lambda: SessionDialog().exec())
 
         # 快速命令按钮
-        self.toolButton.setIcon(qta.icon('mdi.speedometer'))
-        self.toolButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        self.toolButton.clicked.connect(lambda: QuickDialog().exec())
+        self.pushButton.setIcon(qta.icon('mdi.speedometer'))
+        self.pushButton.setStyleSheet("""
+            QPushButton {
+                    border: none;
+            }   
+            QPushButton:hover {
+                    background-color: #dddddd;
+            }  
+        """)
+        self.pushButton.clicked.connect(lambda: QuickDialog().exec())
         
         self.listWidget.setVisible(False)
         self.tabWidget.setTabsClosable(True)
@@ -47,9 +55,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.setStyleSheet("QStatusBar { padding-bottom: 20px; }")
         left_widget = QLabel("就绪")
         self.statusbar.addWidget(left_widget, 1)  # 左侧信息，权重为 1
-        link = QLabel("<a href='https://github.com/lbhzy/hterm'>📬Hterm Repository</a>")
-        link.linkActivated.connect(lambda url: QDesktopServices.openUrl(QUrl(url)))
-        self.statusbar.addWidget(link)
+        button = QPushButton(qta.icon('msc.github-alt'), 'Hterm Repository')
+        button.setCursor(Qt.PointingHandCursor)
+        button.setStyleSheet("""
+            QPushButton {
+                    color: #5555ff;
+                    border: none;
+            }   
+            QPushButton:hover {
+                    color: #5555ff;
+                    border: none;
+                    text-decoration: underline;
+            }  
+        """)
+        button.clicked.connect(lambda: QDesktopServices.openUrl(QUrl('https://github.com/lbhzy/hterm')))
+        self.statusbar.addWidget(button)
         # right_widget = QLabel("2024-8-16 0:11")
         # self.statusbar.addWidget(right_widget, 0)  # 右侧信息，权重为 0
 
@@ -93,9 +113,9 @@ if __name__ == "__main__":
     # app.setStyle("fusion")
     font = QFont()
     font.setFamilies(["Consolas", "Microsoft YaHei UI"])
-    # font.setPointSize(10)  # 设置字体大小
+    # font.setPointSize(10)
     app.setFont(font)
 
     w = MainWindow()
     w.show()
-    app.exec()        
+    app.exec()
