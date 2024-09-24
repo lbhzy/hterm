@@ -1,5 +1,5 @@
-# hterm
-`hterm`是一款终端工具，目前支持建立`SSH`、`Serial`、`Shell`会话
+# Hterm
+`Hterm`是一款终端工具，目前支持建立`SSH`、`Serial`、`Shell`会话
 
 # 使用
 1. 安装依赖
@@ -12,7 +12,7 @@ py main.py
 ```
 
 # 打包
-运行`build.bat`，成果物路径`./dist/hterm`
+运行`build.bat`，成果物路径`./dist/Hterm`
 
 # TODO
 1. 会话管理
