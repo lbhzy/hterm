@@ -13,7 +13,7 @@ class Config:
         self.config = os.path.join(self.dir, f"{type}.yaml")
 
     def loadConfig(self):
-        with open(self.config, 'r') as file:
+        with open(self.config, 'r', encoding="utf-8") as file:
             cfg = yaml.safe_load(file)
         return cfg
 
