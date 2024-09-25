@@ -1,0 +1,7 @@
+- name: 打印
+  type: text
+  text: echo hterm
+
+- name: 测试
+  type: script
+  text: xx

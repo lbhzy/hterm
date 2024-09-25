@@ -10,7 +10,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'terminal'))
 sys.path.append(os.path.join(os.path.dirname(__file__), 'ui'))
 
 from ui.main_ui import Ui_MainWindow
-from common.quick import QuickDialog
+from common.quick import QuickDialog, QuickButton
 from common.session import SessionDialog
 from common.config import Config
 from terminal.terminal_ssh import SSHTerm
@@ -81,10 +81,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             action.triggered.connect(self.openSession)
             self.session_menu.addAction(action)
 
-        # cfg = config.getConfigByName("openwrt")
-        # self.openSession(cfg)
-        # cfg = config.getConfigByName("powershell")
-        # self.openSession(cfg)
+        config = Config("quick")
+        quick_list = config.loadConfig()
+        for quick in quick_list:
+            print(quick['name'])
+            button = QuickButton()
+            button.setText(quick['name'])
+            button.setIcon(qta.icon('fa.send-o'))
+            self.horizontalLayout.insertWidget(1, button)
 
     def openSession(self):
         name = self.sender().text()

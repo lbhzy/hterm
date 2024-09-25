@@ -4,6 +4,7 @@ from PySide6.QtWidgets import *
 
 import os
 import sys
+import importlib
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from ui.quick_ui import Ui_Dialog
@@ -20,8 +21,8 @@ def main():
 
 class QuickDialog(QDialog, Ui_Dialog):
     """ 快捷命令 """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
         self.setupUi(self)
         self.textEdit.setPlaceholderText(MSG0)
@@ -37,6 +38,16 @@ class QuickDialog(QDialog, Ui_Dialog):
         print("confirm")
         super().accept()
 
+class QuickButton(QPushButton):
+    """ 快捷命令按钮 """
+    def __init__(self):
+        super().__init__()
+        self.clicked.connect(self.send)
+
+    def send(self):
+        mod = importlib.import_module(f"scripts.quick.{self.text()}")
+        text = mod.main()
+        print(text)
 
 if __name__ == "__main__":
 
