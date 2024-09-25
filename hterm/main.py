@@ -73,7 +73,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # right_widget = QLabel("2024-8-16 0:11")
         # self.statusbar.addWidget(right_widget, 0)  # 右侧信息，权重为 0
 
-        config = Config()
+        config = Config("session")
         session_list = config.loadConfig()
         for session in session_list:
             action = QAction(self)
