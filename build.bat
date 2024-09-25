@@ -1,6 +1,11 @@
 @echo off
 
-pyinstaller -y -i images/icon.png -p hterm/terminal;hterm/ui -n Hterm hterm/main.py
+pyinstaller -y ^
+-i images/icon.png ^
+-p hterm/terminal;hterm/ui ^
+-n Hterm ^
+hterm/main.py
+
 del *.spec
 
 xcopy /y /q /S /E /I ".\hterm\images" ".\dist\hterm\images"
