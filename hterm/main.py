@@ -55,7 +55,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.setStyleSheet("QStatusBar { padding-bottom: 20px; }")
         left_widget = QLabel("就绪")
         self.statusbar.addWidget(left_widget, 1)  # 左侧信息，权重为 1
-        button = QPushButton(qta.icon('msc.github-alt'), 'Hterm Repository')
+        button = QPushButton(qta.icon('fa5b.github'), 'Hterm Repository')
         button.setCursor(Qt.PointingHandCursor)
         button.setStyleSheet("""
             QPushButton {
