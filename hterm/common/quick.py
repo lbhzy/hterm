@@ -47,6 +47,7 @@ class QuickButton(QPushButton):
         self.type = type
         self.content = content
 
+        self.setFocusPolicy(Qt.NoFocus)
         self.clicked.connect(self.send)
 
     def send(self):
