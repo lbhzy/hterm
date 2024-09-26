@@ -92,7 +92,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def openSession(self):
         name = self.sender().text()
 
-        cfg = Config().getConfigByName(name)
+        cfg = Config("session").getConfigByName(name)
         if cfg['type'] == 'ssh':
             term = SSHTerm(cfg['target'], cfg['port'], cfg['username'], cfg['password'])
         elif cfg['type'] == 'serial':
