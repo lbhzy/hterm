@@ -26,14 +26,25 @@ class QuickDialog(QDialog, Ui_Dialog):
         super().__init__(parent)
 
         self.setupUi(self)
+        self.setWindowTitle("快捷命令")
         self.textEdit.setPlaceholderText(MSG0)
         self.comboBox.currentIndexChanged.connect(self.indexChanged)
+        self.addButton.clicked.connect(self.add)
+        self.delButton.clicked.connect(self.delete)
 
     def indexChanged(self, index):
         if index == 1:
             self.textEdit.setPlaceholderText(MSG1)
         else:
             self.textEdit.setPlaceholderText(MSG0)
+
+    def add(self):
+        self.listWidget.addItem("未命名")
+
+    def delete(self):
+        self.listWidget.takeItem(self.listWidget.currentRow())
+        
+
 
     def accept(self):
         print("confirm")
@@ -63,7 +74,11 @@ class QuickButton(QPushButton):
                 QMessageBox.critical(self, "执行脚本出错", str(e))
                 return
         
-        print(text)
+        if isinstance(text, str):
+            if text:
+                print(text)
+        else:
+            QMessageBox.critical(self, "执行脚本出错", f"返回类型{type(text)}，请返回str类型")
 
 
 if __name__ == "__main__":

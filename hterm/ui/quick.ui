@@ -19,7 +19,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QTreeWidget" name="treeWidget">
+        <widget class="QListWidget" name="listWidget">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -32,46 +32,21 @@
            <height>16777215</height>
           </size>
          </property>
-         <column>
-          <property name="text">
-           <string>组</string>
-          </property>
-         </column>
-         <item>
-          <property name="text">
-           <string>常用</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>uboot设环境变量</string>
-           </property>
-          </item>
-         </item>
-         <item>
-          <property name="text">
-           <string>裸板烧录</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>loady</string>
-           </property>
-          </item>
-         </item>
         </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QToolButton" name="toolButton_2">
+          <widget class="QToolButton" name="addButton">
            <property name="text">
-            <string>...</string>
+            <string>+</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="toolButton">
+          <widget class="QToolButton" name="delButton">
            <property name="text">
-            <string>...</string>
+            <string>-</string>
            </property>
           </widget>
          </item>

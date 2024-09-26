@@ -16,10 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QComboBox, QDialog,
-    QDialogButtonBox, QFormLayout, QHBoxLayout, QHeaderView,
-    QLabel, QLineEdit, QSizePolicy, QTextEdit,
-    QToolButton, QTreeWidget, QTreeWidgetItem, QVBoxLayout,
-    QWidget)
+    QDialogButtonBox, QFormLayout, QHBoxLayout, QLabel,
+    QLineEdit, QListWidget, QListWidgetItem, QSizePolicy,
+    QTextEdit, QToolButton, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -32,32 +31,28 @@ class Ui_Dialog(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.treeWidget = QTreeWidget(Dialog)
-        __qtreewidgetitem = QTreeWidgetItem(self.treeWidget)
-        QTreeWidgetItem(__qtreewidgetitem)
-        __qtreewidgetitem1 = QTreeWidgetItem(self.treeWidget)
-        QTreeWidgetItem(__qtreewidgetitem1)
-        self.treeWidget.setObjectName(u"treeWidget")
+        self.listWidget = QListWidget(Dialog)
+        self.listWidget.setObjectName(u"listWidget")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.treeWidget.sizePolicy().hasHeightForWidth())
-        self.treeWidget.setSizePolicy(sizePolicy)
-        self.treeWidget.setMaximumSize(QSize(150, 16777215))
+        sizePolicy.setHeightForWidth(self.listWidget.sizePolicy().hasHeightForWidth())
+        self.listWidget.setSizePolicy(sizePolicy)
+        self.listWidget.setMaximumSize(QSize(150, 16777215))
 
-        self.verticalLayout_2.addWidget(self.treeWidget)
+        self.verticalLayout_2.addWidget(self.listWidget)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.toolButton_2 = QToolButton(Dialog)
-        self.toolButton_2.setObjectName(u"toolButton_2")
+        self.addButton = QToolButton(Dialog)
+        self.addButton.setObjectName(u"addButton")
 
-        self.horizontalLayout_2.addWidget(self.toolButton_2)
+        self.horizontalLayout_2.addWidget(self.addButton)
 
-        self.toolButton = QToolButton(Dialog)
-        self.toolButton.setObjectName(u"toolButton")
+        self.delButton = QToolButton(Dialog)
+        self.delButton.setObjectName(u"delButton")
 
-        self.horizontalLayout_2.addWidget(self.toolButton)
+        self.horizontalLayout_2.addWidget(self.delButton)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
@@ -134,23 +129,8 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        ___qtreewidgetitem = self.treeWidget.headerItem()
-        ___qtreewidgetitem.setText(0, QCoreApplication.translate("Dialog", u"\u7ec4", None));
-
-        __sortingEnabled = self.treeWidget.isSortingEnabled()
-        self.treeWidget.setSortingEnabled(False)
-        ___qtreewidgetitem1 = self.treeWidget.topLevelItem(0)
-        ___qtreewidgetitem1.setText(0, QCoreApplication.translate("Dialog", u"\u5e38\u7528", None));
-        ___qtreewidgetitem2 = ___qtreewidgetitem1.child(0)
-        ___qtreewidgetitem2.setText(0, QCoreApplication.translate("Dialog", u"uboot\u8bbe\u73af\u5883\u53d8\u91cf", None));
-        ___qtreewidgetitem3 = self.treeWidget.topLevelItem(1)
-        ___qtreewidgetitem3.setText(0, QCoreApplication.translate("Dialog", u"\u88f8\u677f\u70e7\u5f55", None));
-        ___qtreewidgetitem4 = ___qtreewidgetitem3.child(0)
-        ___qtreewidgetitem4.setText(0, QCoreApplication.translate("Dialog", u"loady", None));
-        self.treeWidget.setSortingEnabled(__sortingEnabled)
-
-        self.toolButton_2.setText(QCoreApplication.translate("Dialog", u"...", None))
-        self.toolButton.setText(QCoreApplication.translate("Dialog", u"...", None))
+        self.addButton.setText(QCoreApplication.translate("Dialog", u"+", None))
+        self.delButton.setText(QCoreApplication.translate("Dialog", u"-", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"\u6807\u7b7e", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"\u7c7b\u578b", None))
         self.comboBox.setItemText(0, QCoreApplication.translate("Dialog", u"\u539f\u59cb\u6587\u672c", None))
