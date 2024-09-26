@@ -20,7 +20,7 @@ class Config:
     def addConfig(self, item):
         cfg = self.loadConfig()
         cfg.append(item)
-        with open(self.config, 'w') as file:
+        with open(self.config, 'w', encoding="utf-8") as file:
             for item in cfg:           
                 yaml.safe_dump([item], file, sort_keys=False)
                 file.write("\n")
