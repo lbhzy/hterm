@@ -53,10 +53,14 @@ class QuickButton(QPushButton):
         if self.type == "text":
             text = self.content
         elif self.type == "script":
-            spec = importlib.util.spec_from_loader('script', loader=None)
-            script = importlib.util.module_from_spec(spec)
-            exec(self.content, script.__dict__)
-            text = script.main()
+            try:
+                spec = importlib.util.spec_from_loader('script', loader=None)
+                script = importlib.util.module_from_spec(spec)
+                exec(self.content, script.__dict__)
+                text = script.main()
+            except Exception as e:
+                QMessageBox.critical(self, "执行脚本出错", str(e))
+                return
         
         print(text)
 

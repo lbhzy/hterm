@@ -32,7 +32,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.resize(QGuiApplication.primaryScreen().size()*0.7)
         # self.setWindowOpacity(0.95)
 
-        self.create_session.triggered.connect(lambda: SessionDialog().exec())
+        self.create_session.triggered.connect(lambda: SessionDialog(self).exec())
 
         # 快速命令按钮
         self.pushButton.setIcon(qta.icon('mdi.speedometer'))
@@ -44,7 +44,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     background-color: #dddddd;
             }  
         """)
-        self.pushButton.clicked.connect(lambda: QuickDialog().exec())
+        self.pushButton.clicked.connect(lambda: QuickDialog(self).exec())
         
         self.listWidget.setVisible(False)
         self.tabWidget.setTabsClosable(True)

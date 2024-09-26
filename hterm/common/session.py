@@ -10,8 +10,8 @@ from ui.session_ui import Ui_SessionDialog
 
 class SessionDialog(QDialog, Ui_SessionDialog):
     """ 会话创建 """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
         self.setupUi(self)
 
