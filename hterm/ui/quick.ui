@@ -127,12 +127,12 @@
          </property>
          <item>
           <property name="text">
-           <string>发送文本</string>
+           <string>原始文本</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>python脚本生成</string>
+           <string>Python脚本</string>
           </property>
          </item>
         </widget>

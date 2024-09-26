@@ -4,7 +4,8 @@ from PySide6.QtWidgets import *
 
 import os
 import sys
-import importlib
+import importlib.util
+
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from ui.quick_ui import Ui_Dialog
@@ -40,14 +41,25 @@ class QuickDialog(QDialog, Ui_Dialog):
 
 class QuickButton(QPushButton):
     """ 快捷命令按钮 """
-    def __init__(self):
+    def __init__(self, type, content):
         super().__init__()
+
+        self.type = type
+        self.content = content
+
         self.clicked.connect(self.send)
 
     def send(self):
-        mod = importlib.import_module(f"scripts.quick.{self.text()}")
-        text = mod.main()
+        if self.type == "text":
+            text = self.content
+        elif self.type == "script":
+            spec = importlib.util.spec_from_loader('script', loader=None)
+            script = importlib.util.module_from_spec(spec)
+            exec(self.content, script.__dict__)
+            text = script.main()
+        
         print(text)
+
 
 if __name__ == "__main__":
 

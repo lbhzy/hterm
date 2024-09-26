@@ -84,8 +84,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         config = Config("quick")
         quick_list = config.loadConfig()
         for quick in quick_list:
-            print(quick['name'])
-            button = QuickButton()
+            button = QuickButton(quick['type'], quick['content'])
             button.setText(quick['name'])
             button.setIcon(qta.icon('fa.send-o'))
             self.horizontalLayout.insertWidget(1, button)

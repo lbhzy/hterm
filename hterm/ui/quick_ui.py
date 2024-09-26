@@ -153,8 +153,8 @@ class Ui_Dialog(object):
         self.toolButton.setText(QCoreApplication.translate("Dialog", u"...", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"\u6807\u7b7e", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"\u7c7b\u578b", None))
-        self.comboBox.setItemText(0, QCoreApplication.translate("Dialog", u"\u53d1\u9001\u6587\u672c", None))
-        self.comboBox.setItemText(1, QCoreApplication.translate("Dialog", u"python\u811a\u672c\u751f\u6210", None))
+        self.comboBox.setItemText(0, QCoreApplication.translate("Dialog", u"\u539f\u59cb\u6587\u672c", None))
+        self.comboBox.setItemText(1, QCoreApplication.translate("Dialog", u"Python\u811a\u672c", None))
 
         self.label_3.setText(QCoreApplication.translate("Dialog", u"\u5185\u5bb9", None))
     # retranslateUi
