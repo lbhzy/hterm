@@ -80,7 +80,7 @@ class Terminal(QTextEdit, Color, VT100Paser):
         self.input_bar.setVisible(False)
         self.input_bar.setPlaceholderText("输入文本，回车发送")
         self.find_bar.setPalette(palette)
-        self.input_bar.returnPressed.connect(lambda: (self.sendData(self.input_bar.text()), self.input_bar.clear()))
+        self.input_bar.returnPressed.connect(lambda: (self.preSendData(self.input_bar.text()), self.input_bar.clear()))
         self.input_bar.focusOutEvent = lambda _: self.input_bar.hide()
 
     def setupUi(self):
@@ -124,6 +124,12 @@ class Terminal(QTextEdit, Color, VT100Paser):
         """ 需要子类重载 """
         # print(data.encode())
         self.display(data)
+
+    def preSendData(self, data):
+        """ 数据发送前处理 """
+        self.sendData(data)
+        # 用户有输入，定位滚动条到最底部 
+        self.verticalScrollBar().setValue(self.verticalScrollBar().maximum())
 
     def display(self, text):
         t0 = time.time()
@@ -171,11 +177,9 @@ class Terminal(QTextEdit, Color, VT100Paser):
 
     def inputMethodEvent(self, event: QInputMethodEvent):
         """ 处理输入法输入 """
-        self.verticalScrollBar().setValue(self.verticalScrollBar().maximum())
-
         data = event.commitString()
         if data:
-            self.sendData(data)
+            self.preSendData(data)
             position = self.textCursor().position()
 
         super().inputMethodEvent(event)
@@ -191,7 +195,7 @@ class Terminal(QTextEdit, Color, VT100Paser):
         """ 处理粘贴输入 """
         if source.hasText():
             # TODO 多行文本警告
-            self.sendData(source.text())
+            self.preSendData(source.text())
             # 在这里可以对粘贴的文本进行处理
             # processed_text = pasted_text.upper()  # 例如，将粘贴的文本转换为大写
             # self.insertPlainText(processed_text)
@@ -212,9 +216,7 @@ class Terminal(QTextEdit, Color, VT100Paser):
             text = '\x1b[D'
 
         if text:
-            self.sendData(text)
-            # 用户有输入，定位滚动条到最底部  
-            self.verticalScrollBar().setValue(self.verticalScrollBar().maximum())
+            self.preSendData(text)
         else:
             super().keyPressEvent(event)
    
