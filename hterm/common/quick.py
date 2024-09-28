@@ -52,19 +52,19 @@ class QuickDialog(QDialog, Ui_Dialog):
 
 class QuickButton(QPushButton):
     """ 快捷命令按钮 """
-    def __init__(self, type, content):
+    def __init__(self, content_type, content):
         super().__init__()
 
-        self.type = type
+        self.content_type = content_type
         self.content = content
 
         self.setFocusPolicy(Qt.NoFocus)
         self.clicked.connect(self.send)
 
     def send(self):
-        if self.type == "text":
+        if self.content_type == "text":
             text = self.content
-        elif self.type == "script":
+        elif self.content_type == "script":
             try:
                 spec = importlib.util.spec_from_loader('script', loader=None)
                 script = importlib.util.module_from_spec(spec)
@@ -76,7 +76,11 @@ class QuickButton(QPushButton):
         
         if isinstance(text, str):
             if text:
-                print(text)
+                tabWidget :QTabWidget = self.parent().findChildren(QTabWidget)[0]
+                # 找到当前在前台的终端
+                term = tabWidget.currentWidget()
+                if term:
+                    term.sendData(text)
         else:
             QMessageBox.critical(self, "执行脚本出错", f"返回类型{type(text)}，请返回str类型")
 
