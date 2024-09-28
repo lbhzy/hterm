@@ -48,7 +48,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.listWidget.setVisible(False)
         self.tabWidget.setTabsClosable(True)
-        self.tabWidget.tabCloseRequested.connect(lambda idx: (self.tabWidget.widget(idx).deleteLater(), self.tabWidget.removeTab(idx)))
+        self.tabWidget.tabCloseRequested.connect(lambda idx: (self.tabWidget.widget(idx).close(), self.tabWidget.removeTab(idx)))
         # self.tabWidget.setStyleSheet("QTabBar::tab { height: 25px; }")
         
         # 状态栏
