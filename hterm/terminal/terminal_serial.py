@@ -20,6 +20,8 @@ class SerialTerm(Terminal):
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self.timerCallback)
+
+        self.open()
         
     def open(self):
         try:
@@ -62,8 +64,8 @@ class SerialTerm(Terminal):
 if __name__ == "__main__":
 
     app = QApplication()
+    
     term = SerialTerm("COM3", 115200)
-    term.open()
-    term.close()
     term.show()
+
     app.exec()
