@@ -10,17 +10,17 @@ class Config:
         else:
             base_dir = os.path.dirname(os.path.dirname(__file__))
         self.dir = os.path.join(base_dir, "profile")
-        self.config = os.path.join(self.dir, f"{type}.yaml")
+        self.path = os.path.join(self.dir, f"{type}.yaml")
 
     def loadConfig(self):
-        with open(self.config, 'r', encoding="utf-8") as file:
+        with open(self.path, 'r', encoding="utf-8") as file:
             cfg = yaml.safe_load(file)
         return cfg
 
     def addConfig(self, item):
         cfg = self.loadConfig()
         cfg.append(item)
-        with open(self.config, 'w', encoding="utf-8") as file:
+        with open(self.path, 'w', encoding="utf-8") as file:
             for item in cfg:           
                 yaml.safe_dump([item], file, sort_keys=False)
                 file.write("\n")
@@ -30,7 +30,12 @@ class Config:
         for item in cfg:
             if item['name'] == name:
                 return item
-
+            
+    def saveNewConfig(self, cfg):
+        with open(self.path, 'w', encoding="utf-8") as file:
+            for item in cfg:           
+                yaml.safe_dump([item], file, sort_keys=False, allow_unicode=True)
+                file.write("\n")
 
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ import sys
 import qtawesome as qta
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'terminal'))
+sys.path.append(os.path.join(os.path.dirname(__file__), 'common'))
 sys.path.append(os.path.join(os.path.dirname(__file__), 'ui'))
 
 from ui.main_ui import Ui_MainWindow
@@ -86,7 +87,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         config = Config("quick")
         quick_list = config.loadConfig()
-        for quick in quick_list:
+        for quick in reversed(quick_list):
             button = QuickButton(quick['type'], quick['content'])
             button.setText(quick['name'])
             button.setIcon(qta.icon('fa.send-o'))

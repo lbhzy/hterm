@@ -1,12 +1,8 @@
-- name: 打印
+- name: echo
   type: text
   content: echo hterm
 
 - name: 测试
   type: script
-  content: |
-            import time
-            def main():
-              t = time.time()
+  content: "import time\ndef main():\n  t = time.time()\n\n  return f\"{t}\""
 
-              return f"{t}"

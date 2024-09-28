@@ -9,6 +9,7 @@ import importlib.util
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from ui.quick_ui import Ui_Dialog
+from config import Config
 
 MSG0 = """例如:
 echo "Hello Hterm" """
@@ -28,26 +29,94 @@ class QuickDialog(QDialog, Ui_Dialog):
         self.setupUi(self)
         self.setWindowTitle("快捷命令")
         self.textEdit.setPlaceholderText(MSG0)
-        self.comboBox.currentIndexChanged.connect(self.indexChanged)
+        self.listWidget.currentRowChanged.connect(self.showQuick)
+        self.comboBox.currentIndexChanged.connect(self.typeChanged)
+        self.lineEdit.textChanged.connect(self.nameChanged)
+        self.textEdit.textChanged.connect(self.contentChanged)
         self.addButton.clicked.connect(self.add)
         self.delButton.clicked.connect(self.delete)
+        self.pushButton.clicked.connect(self.testRun)
+        
+        self.cfg = Config("quick")
+        self.quicks = self.cfg.loadConfig()
+        for quick in self.quicks:
+            self.listWidget.addItem(quick["name"])
+        self.listWidget.setCurrentRow(0)
 
-    def indexChanged(self, index):
-        if index == 1:
+    def contentChanged(self):
+        index = self.listWidget.currentRow()
+        text = self.textEdit.toPlainText()
+        self.quicks[index]["content"] = text
+
+    def typeChanged(self, type):
+        index = self.listWidget.currentRow()
+        if type == 1:
             self.textEdit.setPlaceholderText(MSG1)
+            self.quicks[index]["type"] = "script"
         else:
             self.textEdit.setPlaceholderText(MSG0)
+            self.quicks[index]["type"] = "text"
+
+    def nameChanged(self, text):
+        index = self.listWidget.currentRow()
+        self.listWidget.currentItem().setText(text)
+        self.quicks[index]["name"] = text
+
+    def testRun(self):
+        text = self.textEdit.toPlainText()
+        if self.comboBox.currentIndex() == 1:
+            try:
+                spec = importlib.util.spec_from_loader('script', loader=None)
+                script = importlib.util.module_from_spec(spec)
+                exec(text, script.__dict__)
+                text = script.main()
+            except Exception as e:
+                QMessageBox.critical(self, "执行脚本出错", str(e))
+                return
+        
+        if isinstance(text, str):
+            if text:
+                QMessageBox.information(self, "运行成功", text)  
+        else:
+            QMessageBox.critical(self, "执行脚本出错", f"返回类型{type(text)}，请返回str类型")            
+
+    def showQuick(self, index):
+        if self.listWidget.currentRow() >= 0:
+            self.lineEdit.setEnabled(True)
+            self.comboBox.setEnabled(True)
+            self.textEdit.setEnabled(True)
+        else:
+            self.lineEdit.setText("")
+            self.comboBox.setEditText("")
+            self.textEdit.setText("")
+            self.textEdit.setPlaceholderText("")
+            self.lineEdit.setDisabled(True)
+            self.comboBox.setDisabled(True)
+            self.textEdit.setEnabled(False)
+            return
+        self.lineEdit.setText(self.quicks[index]["name"])
+        self.comboBox.setCurrentIndex(0 if self.quicks[index]["type"] == "text" else 1)
+        self.textEdit.setText(self.quicks[index]["content"])
 
     def add(self):
-        self.listWidget.addItem("未命名")
+        index = self.listWidget.currentRow() + 1
+        self.listWidget.insertItem(index, "未命名")
+        item = {'name': '未命名', 'type': 'text', 'content': ''}
+        self.quicks.insert(index, item)
+        self.listWidget.setCurrentRow(index)
+
 
     def delete(self):
-        self.listWidget.takeItem(self.listWidget.currentRow())
+        if self.listWidget.count() > 0:
+            index = self.listWidget.currentRow()
+            self.listWidget.takeItem(index)
+            del self.quicks[index]
+            print(self.listWidget.currentRow())
         
 
 
     def accept(self):
-        print("confirm")
+        self.cfg.saveNewConfig(self.quicks)
         super().accept()
 
 class QuickButton(QPushButton):
@@ -80,7 +149,7 @@ class QuickButton(QPushButton):
                 # 找到当前在前台的终端
                 term = tabWidget.currentWidget()
                 if term:
-                    term.sendData(text)
+                    term.preSendData(text)
         else:
             QMessageBox.critical(self, "执行脚本出错", f"返回类型{type(text)}，请返回str类型")
 

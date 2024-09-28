@@ -17,8 +17,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QComboBox, QDialog,
     QDialogButtonBox, QFormLayout, QHBoxLayout, QLabel,
-    QLineEdit, QListWidget, QListWidgetItem, QSizePolicy,
-    QTextEdit, QToolButton, QVBoxLayout, QWidget)
+    QLineEdit, QListWidget, QListWidgetItem, QPushButton,
+    QSizePolicy, QTextEdit, QToolButton, QVBoxLayout,
+    QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -106,6 +107,11 @@ class Ui_Dialog(object):
 
         self.formLayout.setWidget(2, QFormLayout.FieldRole, self.textEdit)
 
+        self.pushButton = QPushButton(Dialog)
+        self.pushButton.setObjectName(u"pushButton")
+
+        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.pushButton)
+
 
         self.horizontalLayout.addLayout(self.formLayout)
 
@@ -137,5 +143,6 @@ class Ui_Dialog(object):
         self.comboBox.setItemText(1, QCoreApplication.translate("Dialog", u"Python\u811a\u672c", None))
 
         self.label_3.setText(QCoreApplication.translate("Dialog", u"\u5185\u5bb9", None))
+        self.pushButton.setText(QCoreApplication.translate("Dialog", u"\u6d4b\u8bd5\u8f93\u51fa", None))
     # retranslateUi
 
