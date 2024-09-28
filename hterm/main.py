@@ -96,7 +96,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if cfg['type'] == 'ssh':
             term = SSHTerm(cfg['target'], cfg['port'], cfg['username'], cfg['password'])
         elif cfg['type'] == 'serial':
-            term = SerialTerm(cfg['target'], cfg['baud'])
+            term = SerialTerm(cfg['target'], cfg['baudrate'])
         elif cfg['type'] == 'local':
             term = LocalTerm(cfg['target'])
 

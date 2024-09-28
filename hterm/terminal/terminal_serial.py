@@ -10,11 +10,11 @@ from terminal_base import Terminal
 
 class SerialTerm(Terminal):
     """ 串口终端 """
-    def __init__(self, port, baud):
+    def __init__(self, port, baudrate):
         super().__init__()
 
         self.port = port
-        self.baud = baud
+        self.baudrate = baudrate
         self.connected = False
 
         self.timer = QTimer(self)
@@ -25,17 +25,18 @@ class SerialTerm(Terminal):
         
     def open(self):
         try:
-            self.ser = serial.Serial(self.port, self.baud, timeout=0.01)
+            self.ser = serial.Serial(self.port, self.baudrate, timeout=0.01)
             self.timer.start(0)
             self.connected = True
-            self.display(f"连接成功\n")
+            self.display(f"\n{self.port} 连接成功\n")
         except Exception as e:
             self.connected = False
-            self.display(f"连接失败: {e}\n")
+            self.display(f"\n{self.port} 连接失败: {e}\n")
 
     def close(self):
         if self.connected:
             self.ser.close()
+        super().close()
               
     def sendData(self, data):
         if self.connected:
@@ -51,7 +52,7 @@ class SerialTerm(Terminal):
                 data = self.ser.readline()
         except Exception:
             self.connected = False
-            self.display(f"连接断开\n")
+            self.display(f"\n\n{self.port} 连接断开，请按任意键尝试重连\n")
             return
         
         if data:
