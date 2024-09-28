@@ -31,11 +31,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowIcon(QIcon(':/icon.png'))
         self.resize(QGuiApplication.primaryScreen().size()*0.7)
         # self.setWindowOpacity(0.95)
+        self.menu.setFocusPolicy(Qt.NoFocus)
 
         self.create_session.triggered.connect(lambda: SessionDialog(self).exec())
 
         # 快速命令按钮
         self.pushButton.setIcon(qta.icon('mdi.speedometer'))
+        self.pushButton.setFocusPolicy(Qt.NoFocus)
         self.pushButton.setStyleSheet("""
             QPushButton {
                     border: none;
@@ -56,6 +58,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         left_widget = QLabel("就绪")
         self.statusbar.addWidget(left_widget, 1)  # 左侧信息，权重为 1
         button = QPushButton(qta.icon('fa5b.github'), 'Hterm Repository')
+        button.setFocusPolicy(Qt.NoFocus)
         button.setCursor(Qt.PointingHandCursor)
         button.setStyleSheet("""
             QPushButton {
