@@ -5,6 +5,7 @@ from PySide6.QtWidgets import *
 import os
 import sys
 import importlib.util
+import qtawesome as qta
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
@@ -117,6 +118,25 @@ class QuickDialog(QDialog, Ui_Dialog):
 
     def accept(self):
         self.cfg.saveNewConfig(self.quicks)
+
+        layout = self.parent().findChild(QHBoxLayout)
+        while True:
+            item = layout.itemAt(1)
+            if isinstance(item.widget(), QPushButton):
+                widget = item.widget()
+                layout.removeWidget(widget)
+                widget.deleteLater()
+            else:
+                break
+        for quick in reversed(self.quicks):
+            button = QuickButton(quick['type'], quick['content'])
+            button.setText(quick['name'])
+            button.setIcon(qta.icon('fa.send-o'))
+            layout.insertWidget(1, button)
+        # for child in self.parent().children():
+        #     if isinstance(child, QPushButton):
+        #         main_widget.removeChild(child)
+        #         child.deleteLater()
         super().accept()
 
 class QuickButton(QPushButton):
