@@ -9,29 +9,38 @@ class Config:
             base_dir = os.path.dirname(sys.argv[0])
         else:
             base_dir = os.path.dirname(os.path.dirname(__file__))
-        self.dir = os.path.join(base_dir, "profile")
+        self.dir = os.path.join(base_dir, "profiles")
         self.path = os.path.join(self.dir, f"{type}.yaml")
 
-    def loadConfig(self):
+        # 文件路径不存在则创建
+        if not os.path.exists(self.dir):
+            os.makedirs(self.dir)
+        if not os.path.isfile(self.path):
+            with open(self.path, 'w') as f:
+                pass
+
         with open(self.path, 'r', encoding="utf-8") as file:
-            cfg = yaml.safe_load(file)
-        return cfg
+            self.cfg = yaml.safe_load(file)
+        if not self.cfg:
+            self.cfg = []
+
+    def loadConfig(self):
+        return self.cfg
 
     def addConfig(self, item):
-        cfg = self.loadConfig()
-        cfg.append(item)
+        self.cfg.append(item)
         with open(self.path, 'w', encoding="utf-8") as file:
-            for item in cfg:           
+            for item in self.cfg:           
                 yaml.safe_dump([item], file, sort_keys=False)
                 file.write("\n")
 
     def getConfigByName(self, name):
-        cfg = self.loadConfig()
-        for item in cfg:
+        for item in self.cfg:
             if item['name'] == name:
                 return item
             
     def saveNewConfig(self, cfg):
+        self.cfg = cfg
         with open(self.path, 'w', encoding="utf-8") as file:
             for item in cfg:           
                 yaml.safe_dump([item], file, sort_keys=False, allow_unicode=True)
@@ -40,7 +49,7 @@ class Config:
 
 if __name__ == "__main__":
 
-    config = Config("session")
+    config = Config("test")
     config.loadConfig()
     cfg = {
         'name': 'hello',
