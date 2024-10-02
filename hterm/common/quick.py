@@ -114,7 +114,6 @@ class QuickDialog(QDialog, Ui_Dialog):
             index = self.listWidget.currentRow()
             self.listWidget.takeItem(index)
             del self.quicks[index]
-            print(self.listWidget.currentRow())
         
 
 
@@ -135,10 +134,6 @@ class QuickDialog(QDialog, Ui_Dialog):
             button.setText(quick['name'])
             button.setIcon(qta.icon('fa.send-o'))
             layout.insertWidget(1, button)
-        # for child in self.parent().children():
-        #     if isinstance(child, QPushButton):
-        #         main_widget.removeChild(child)
-        #         child.deleteLater()
         super().accept()
 
 class QuickButton(QPushButton):
