@@ -44,13 +44,18 @@ class QuickDialog(QDialog, Ui_Dialog):
             self.listWidget.addItem(quick["name"])
         self.listWidget.setCurrentRow(0)
 
+
     def contentChanged(self):
         index = self.listWidget.currentRow()
+        if index < 0:
+            return
         text = self.textEdit.toPlainText()
         self.quicks[index]["content"] = text
 
     def typeChanged(self, type):
         index = self.listWidget.currentRow()
+        if index < 0:
+            return
         if type == 1:
             self.textEdit.setPlaceholderText(MSG1)
             self.quicks[index]["type"] = "script"
@@ -60,11 +65,15 @@ class QuickDialog(QDialog, Ui_Dialog):
 
     def nameChanged(self, text):
         index = self.listWidget.currentRow()
+        if index < 0:
+            return
         self.listWidget.currentItem().setText(text)
         self.quicks[index]["name"] = text
 
     def testRun(self):
         text = self.textEdit.toPlainText()
+        if not text:
+            return
         if self.comboBox.currentIndex() == 1:
             try:
                 spec = importlib.util.spec_from_loader('script', loader=None)
@@ -82,29 +91,22 @@ class QuickDialog(QDialog, Ui_Dialog):
             QMessageBox.critical(self, "执行脚本出错", f"返回类型{type(text)}，请返回str类型")            
 
     def showQuick(self, index):
-        if self.listWidget.currentRow() >= 0:
-            self.lineEdit.setEnabled(True)
-            self.comboBox.setEnabled(True)
-            self.textEdit.setEnabled(True)
-        else:
+        if self.listWidget.currentRow() < 0:
             self.lineEdit.setText("")
-            self.comboBox.setEditText("")
+            # self.comboBox.setEditText("")
             self.textEdit.setText("")
-            self.textEdit.setPlaceholderText("")
-            self.lineEdit.setDisabled(True)
-            self.comboBox.setDisabled(True)
-            self.textEdit.setEnabled(False)
             return
         self.lineEdit.setText(self.quicks[index]["name"])
         self.comboBox.setCurrentIndex(0 if self.quicks[index]["type"] == "text" else 1)
         self.textEdit.setText(self.quicks[index]["content"])
 
     def add(self):
-        index = self.listWidget.currentRow() + 1
+        index = self.listWidget.currentRow()
         self.listWidget.insertItem(index, "未命名")
         item = {'name': '未命名', 'type': 'text', 'content': ''}
         self.quicks.insert(index, item)
-        self.listWidget.setCurrentRow(index)
+        if index == -1:
+            self.listWidget.setCurrentRow(0)
 
 
     def delete(self):
