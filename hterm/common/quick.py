@@ -107,6 +107,8 @@ class QuickDialog(QDialog, Ui_Dialog):
         self.quicks.insert(index, item)
         if index == -1:
             self.listWidget.setCurrentRow(0)
+        else:
+            self.listWidget.setCurrentRow(index)
 
 
     def delete(self):
