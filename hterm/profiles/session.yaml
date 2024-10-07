@@ -13,7 +13,3 @@
 - name: powershell
   type: local
   target: powershell
-
-- name: hello
-  protocol: serial
-
