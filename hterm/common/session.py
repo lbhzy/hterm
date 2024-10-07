@@ -73,7 +73,9 @@ class SessionList(QListWidget):
 
         self.menu = QMenu(self)
         action = self.menu.addAction("新建会话")
-        action.triggered.connect(lambda: SessionDialog(self).exec())
+        dialog = SessionDialog(self)
+        dialog.accepted.connect(self.updateSessionList)
+        action.triggered.connect(lambda: dialog.exec())
 
         self.item_menu = QMenu(self)
         action1 = self.item_menu.addAction("修改")
@@ -83,6 +85,11 @@ class SessionList(QListWidget):
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.menuHandler)
 
+        self.updateSessionList()
+
+
+    def updateSessionList(self):
+        self.clear()
         cfg = Config('session')
         sessions = cfg.loadConfig()
         for session in sessions:
