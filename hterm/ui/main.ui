@@ -43,7 +43,7 @@
       <property name="handleWidth">
        <number>0</number>
       </property>
-      <widget class="QListWidget" name="listWidget">
+      <widget class="SessionList" name="listWidget">
        <property name="maximumSize">
         <size>
          <width>150</width>
@@ -74,14 +74,6 @@
        <property name="viewMode">
         <enum>QListView::ViewMode::ListMode</enum>
        </property>
-       <item>
-        <property name="text">
-         <string>右键添加会话</string>
-        </property>
-        <property name="icon">
-         <iconset theme="QIcon::ThemeIcon::InputMouse"/>
-        </property>
-       </item>
       </widget>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
@@ -168,6 +160,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SessionList</class>
+   <extends>QListWidget</extends>
+   <header>session</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>

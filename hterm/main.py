@@ -49,7 +49,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """)
         self.pushButton.clicked.connect(lambda: QuickDialog(self).exec())
         
-        self.listWidget.setVisible(False)
+        # 会话列表
+        # self.listWidget.setVisible(False)
+        self.listWidget.itemDoubleClicked.connect(self.openSession)
+        self.listWidget.setSpacing(2)
+
         self.tabWidget.setTabsClosable(True)
         self.tabWidget.tabCloseRequested.connect(lambda idx: (self.tabWidget.widget(idx).close(), self.tabWidget.removeTab(idx)))
         # self.tabWidget.setStyleSheet("QTabBar::tab { height: 25px; }")
@@ -77,13 +81,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # right_widget = QLabel("2024-8-16 0:11")
         # self.statusbar.addWidget(right_widget, 0)  # 右侧信息，权重为 0
 
-        config = Config("session")
-        session_list = config.loadConfig()
-        for session in session_list:
-            action = QAction(self)
-            action.setText(session['name'])
-            action.triggered.connect(self.openSession)
-            self.session_menu.addAction(action)
+        # config = Config("session")
+        # session_list = config.loadConfig()
+        # for session in session_list:
+        #     action = QAction(self)
+        #     action.setText(session['name'])
+        #     action.triggered.connect(self.openSession)
+        #     self.session_menu.addAction(action)
 
         config = Config("quick")
         quick_list = config.loadConfig()
@@ -93,8 +97,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             button.setIcon(qta.icon('fa.send-o'))
             self.horizontalLayout.insertWidget(1, button)
 
-    def openSession(self):
-        name = self.sender().text()
+    def openSession(self, item):
+        # name = self.sender().text()
+        name = item.text()
 
         cfg = Config("session").getConfigByName(name)
         if cfg['type'] == 'ssh':

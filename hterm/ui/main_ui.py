@@ -16,10 +16,12 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QListView, QListWidget,
-    QListWidgetItem, QMainWindow, QMenu, QMenuBar,
-    QPushButton, QSizePolicy, QSpacerItem, QSplitter,
-    QStatusBar, QTabWidget, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QListView, QListWidgetItem,
+    QMainWindow, QMenu, QMenuBar, QPushButton,
+    QSizePolicy, QSpacerItem, QSplitter, QStatusBar,
+    QTabWidget, QVBoxLayout, QWidget)
+
+from session import SessionList
 import resources_rc
 
 class Ui_MainWindow(object):
@@ -50,10 +52,7 @@ class Ui_MainWindow(object):
         self.splitter.setObjectName(u"splitter")
         self.splitter.setOrientation(Qt.Orientation.Horizontal)
         self.splitter.setHandleWidth(0)
-        self.listWidget = QListWidget(self.splitter)
-        icon = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.InputMouse))
-        __qlistwidgetitem = QListWidgetItem(self.listWidget)
-        __qlistwidgetitem.setIcon(icon);
+        self.listWidget = SessionList(self.splitter)
         self.listWidget.setObjectName(u"listWidget")
         self.listWidget.setMaximumSize(QSize(150, 16777215))
         self.listWidget.setMovement(QListView.Movement.Static)
@@ -117,13 +116,6 @@ class Ui_MainWindow(object):
         self.action1.setText(QCoreApplication.translate("MainWindow", u"1", None))
         self.action1_2.setText(QCoreApplication.translate("MainWindow", u"1", None))
         self.action2.setText(QCoreApplication.translate("MainWindow", u"2", None))
-
-        __sortingEnabled = self.listWidget.isSortingEnabled()
-        self.listWidget.setSortingEnabled(False)
-        ___qlistwidgetitem = self.listWidget.item(0)
-        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"\u53f3\u952e\u6dfb\u52a0\u4f1a\u8bdd", None));
-        self.listWidget.setSortingEnabled(__sortingEnabled)
-
 #if QT_CONFIG(tooltip)
         self.listWidget.setToolTip("")
 #endif // QT_CONFIG(tooltip)
