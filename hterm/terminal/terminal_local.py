@@ -25,6 +25,9 @@ class LocalTerm(Terminal):
         except Exception as e:
             self.display(f"Exception: {e}\n")
 
+    def close(self):
+        self.proc.close(force=True)
+        super().close()
 
     def sendData(self, data):
         self.proc.write(data)
