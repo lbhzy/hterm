@@ -18,6 +18,7 @@ class SessionDialog(QDialog, Ui_SessionDialog):
 
         self.setupUi(self)
 
+    def exec(self):
         self.tabWidget.setCurrentIndex(0)
         # SSH相关
         # self.ssh_name.setPlaceholderText('缺省使用服务器名称')
@@ -32,8 +33,8 @@ class SessionDialog(QDialog, Ui_SessionDialog):
         ports = serial.tools.list_ports.comports()
         for port in ports:
             self.serial_port.addItem(port.device)
-            print(f"设备: {port.device}, 描述: {port.description}, 硬件ID: {port.hwid}")
-
+            # print(f"设备: {port.device}, 描述: {port.description}, 硬件ID: {port.hwid}")
+        return super().exec()
 
     def accept(self):
         index = self.tabWidget.currentIndex()
