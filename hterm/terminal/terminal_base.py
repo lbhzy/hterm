@@ -96,8 +96,7 @@ class Terminal(QTextEdit, Color, VT100Paser):
 
         # 设置字体
         font = QFont()
-        font.setFamilies(["JetBrains Mono", "Consolas", "HarmonyOS Sans SC"])
-        # font.setFamilies(["Consolas", "HarmonyOS Sans SC"])
+        font.setFamilies(["Cascadia Mono", "Consolas", "Microsoft YaHei UI"])
         font.setPointSize(14)
         self.setFont(font)
 
