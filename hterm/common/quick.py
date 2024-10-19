@@ -22,6 +22,21 @@ def main():
     
     return "The text you want to send" """
 
+def runPythonString(parent, s):
+    try:
+        spec = importlib.util.spec_from_loader('script', loader=None)
+        script = importlib.util.module_from_spec(spec)
+        exec(s, script.__dict__)
+        text = script.main()
+    except Exception as e:
+        QMessageBox.critical(parent, "执行脚本出错", str(e))
+        return
+
+    if not isinstance(text, str):
+        QMessageBox.critical(parent, "执行脚本出错", f"返回类型{type(text)}，请返回str类型")
+        return
+    return text
+
 class QuickDialog(QDialog, Ui_Dialog):
     """ 快捷命令 """
     def __init__(self, parent=None):
@@ -78,20 +93,9 @@ class QuickDialog(QDialog, Ui_Dialog):
         if not text:
             return
         if self.comboBox.currentIndex() == 1:
-            try:
-                spec = importlib.util.spec_from_loader('script', loader=None)
-                script = importlib.util.module_from_spec(spec)
-                exec(text, script.__dict__)
-                text = script.main()
-            except Exception as e:
-                QMessageBox.critical(self, "执行脚本出错", str(e))
-                return
+            text = runPythonString(self, text)
         
-        if isinstance(text, str):
-            if text:
-                QMessageBox.information(self, "运行成功", text)  
-        else:
-            QMessageBox.critical(self, "执行脚本出错", f"返回类型{type(text)}，请返回str类型")            
+        QMessageBox.information(self, "运行成功", text)            
 
     def showQuick(self, index):
         if self.listWidget.currentRow() < 0:
@@ -124,63 +128,101 @@ class QuickDialog(QDialog, Ui_Dialog):
 
     def accept(self):
         self.cfg.saveNewConfig(self.quicks)
-
-        layout = self.parent().findChild(QHBoxLayout)
-        while True:
-            item = layout.itemAt(1)
-            if isinstance(item.widget(), QPushButton):
-                widget = item.widget()
-                layout.removeWidget(widget)
-                widget.deleteLater()
-            else:
-                break
-        for quick in reversed(self.quicks):
-            button = QuickButton(quick['type'], quick['content'])
-            button.setText(quick['name'])
-            button.setIcon(qta.icon('fa.send-o'))
-            layout.insertWidget(1, button)
         super().accept()
 
 class QuickButton(QPushButton):
     """ 快捷命令按钮 """
-    def __init__(self, content_type, content):
+    send_signal = Signal(str)
+
+    def __init__(self, name, content_type, content):
         super().__init__()
 
         self.content_type = content_type
         self.content = content
 
+        self.setText(name)
+        self.setIcon(qta.icon('mdi6.arrow-up-bold-circle', color="green"))
+
+        # 设置按钮尺寸 适应文本长度
+        metrics = QFontMetrics(self.font())
+        width = metrics.horizontalAdvance(name)
+        self.setFixedSize(width + 20 + 10, 20)
+        
         self.setFocusPolicy(Qt.NoFocus)
+
         self.clicked.connect(self.send)
 
     def send(self):
         if self.content_type == "text":
             text = self.content
         elif self.content_type == "script":
-            try:
-                spec = importlib.util.spec_from_loader('script', loader=None)
-                script = importlib.util.module_from_spec(spec)
-                exec(self.content, script.__dict__)
-                text = script.main()
-            except Exception as e:
-                QMessageBox.critical(self, "执行脚本出错", str(e))
-                return
+            text = runPythonString(self, self.content)
         
-        if isinstance(text, str):
-            if text:
-                tabWidget :QTabWidget = self.parent().findChildren(QTabWidget)[0]
-                # 找到当前在前台的终端
-                term = tabWidget.currentWidget()
-                if term:
-                    term.preSendData(text)
+        if text:
+            self.send_signal.emit(text)
+
+
+class QuickBar(QWidget):
+    """ 快捷命令栏 """
+    send_signal = Signal(str)
+
+    def __init__(self, parent = ..., f = None):
+        if f:
+            super().__init__(parent, f)
         else:
-            QMessageBox.critical(self, "执行脚本出错", f"返回类型{type(text)}，请返回str类型")
+            super().__init__(parent)
+
+        self.widget = QHBoxLayout(self)
+        self.widget.setSpacing(0)
+        self.widget.setContentsMargins(0, 0, 0, 0)
+
+        self.layout = QHBoxLayout()
+        self.layout.setSpacing(0)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        
+        self.dialog = QuickDialog(self)
+        self.dialog.accepted.connect(self.updateBar)
+
+        self.button = QPushButton(qta.icon('mdi.speedometer'), "快捷命令")
+        self.button.setFixedSize(80, 20)
+        self.button.setFocusPolicy(Qt.NoFocus)
+        self.button.setStyleSheet("""
+            QPushButton {
+                    border: none;
+            }   
+            QPushButton:hover {
+                    background-color: #dddddd;
+            }  
+        """)
+        self.button.clicked.connect(lambda: self.dialog.exec())
+
+        self.widget.addWidget(self.button)
+        self.widget.addLayout(self.layout)
+        self.widget.addItem(QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
+
+        self.updateBar()
+
+    def updateBar(self):
+        while self.layout.count():
+            item = self.layout.takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.deleteLater()
+
+        config = Config("quick")
+        quicks = config.loadConfig()
+        for quick in quicks:
+            button = QuickButton(quick['name'], quick['type'], quick['content'])
+            button.send_signal.connect(self.send_signal)
+            self.layout.addWidget(button)
 
 
 if __name__ == "__main__":
 
     app = QApplication()
 
-    w = QuickDialog()
+    w = QuickBar(None, Qt.Window)
+    w.send_signal.connect(lambda text: print(text))
     w.show()
 
     app.exec() 

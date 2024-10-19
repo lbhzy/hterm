@@ -1,6 +1,8 @@
 - name: echo
   type: text
-  content: echo hterm
+  content: 'echo hterm
+
+    '
 
 - name: 测试
   type: script

@@ -4,7 +4,7 @@ from PySide6.QtWidgets import *
 
 import os
 import sys
-from PySide6.QtWidgets import QWidget
+import qtawesome as qta
 import serial.tools.list_ports
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
@@ -94,7 +94,14 @@ class SessionList(QListWidget):
         cfg = Config('session')
         sessions = cfg.loadConfig()
         for session in sessions:
-            self.addItem(session['name'])
+            item = QListWidgetItem(session['name'])
+            if session['type'] == 'serial':
+                item.setIcon(qta.icon('mdi6.serial-port'))
+            elif session['type'] == 'ssh':
+                item.setIcon(qta.icon('mdi.ssh'))
+            elif session['type'] == 'local': 
+                item.setIcon(qta.icon('ri.mini-program-line'))
+            self.addItem(item)
         
 
     def menuHandler(self, pos):

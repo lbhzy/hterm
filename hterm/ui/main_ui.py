@@ -16,10 +16,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QListView, QListWidgetItem,
-    QMainWindow, QMenu, QMenuBar, QPushButton,
-    QSizePolicy, QSpacerItem, QSplitter, QStatusBar,
-    QTabWidget, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QListView, QListWidgetItem, QMainWindow,
+    QMenu, QMenuBar, QSizePolicy, QSplitter,
+    QStatusBar, QTabWidget, QVBoxLayout, QWidget)
 
 from session import SessionList
 import resources_rc
@@ -34,14 +33,32 @@ class Ui_MainWindow(object):
         MainWindow.setFont(font)
         self.create_session = QAction(MainWindow)
         self.create_session.setObjectName(u"create_session")
+        icon = QIcon(QIcon.fromTheme(u"contact-new"))
+        self.create_session.setIcon(icon)
         self.setting = QAction(MainWindow)
         self.setting.setObjectName(u"setting")
+        icon1 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.DocumentProperties))
+        self.setting.setIcon(icon1)
         self.action1 = QAction(MainWindow)
         self.action1.setObjectName(u"action1")
         self.action1_2 = QAction(MainWindow)
         self.action1_2.setObjectName(u"action1_2")
         self.action2 = QAction(MainWindow)
         self.action2.setObjectName(u"action2")
+        self.action = QAction(MainWindow)
+        self.action.setObjectName(u"action")
+        icon2 = QIcon(QIcon.fromTheme(u"help-about"))
+        self.action.setIcon(icon2)
+        self.action_2 = QAction(MainWindow)
+        self.action_2.setObjectName(u"action_2")
+        icon3 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.NetworkWireless))
+        self.action_2.setIcon(icon3)
+        self.action_3 = QAction(MainWindow)
+        self.action_3.setObjectName(u"action_3")
+        self.action_4 = QAction(MainWindow)
+        self.action_4.setObjectName(u"action_4")
+        self.action_5 = QAction(MainWindow)
+        self.action_5.setObjectName(u"action_5")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -84,20 +101,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.splitter)
 
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.pushButton = QPushButton(self.centralwidget)
-        self.pushButton.setObjectName(u"pushButton")
-
-        self.horizontalLayout.addWidget(self.pushButton)
-
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout.addItem(self.horizontalSpacer)
-
-
-        self.verticalLayout.addLayout(self.horizontalLayout)
-
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -106,16 +109,32 @@ class Ui_MainWindow(object):
         self.menu.setObjectName(u"menu")
         self.session_menu = QMenu(self.menu)
         self.session_menu.setObjectName(u"session_menu")
+        icon4 = QIcon(QIcon.fromTheme(u"address-book-new"))
+        self.session_menu.setIcon(icon4)
+        self.menu_2 = QMenu(self.menubar)
+        self.menu_2.setObjectName(u"menu_2")
+        self.menu_3 = QMenu(self.menubar)
+        self.menu_3.setObjectName(u"menu_3")
+        self.menu_4 = QMenu(self.menubar)
+        self.menu_4.setObjectName(u"menu_4")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menu.menuAction())
+        self.menubar.addAction(self.menu_2.menuAction())
+        self.menubar.addAction(self.menu_3.menuAction())
+        self.menubar.addAction(self.menu_4.menuAction())
         self.menu.addAction(self.create_session)
         self.menu.addAction(self.session_menu.menuAction())
         self.menu.addSeparator()
         self.menu.addAction(self.setting)
+        self.menu_2.addAction(self.action_2)
+        self.menu_3.addAction(self.action_3)
+        self.menu_3.addAction(self.action_4)
+        self.menu_3.addAction(self.action_5)
+        self.menu_4.addAction(self.action)
 
         self.retranslateUi(MainWindow)
 
@@ -132,14 +151,21 @@ class Ui_MainWindow(object):
         self.action1.setText(QCoreApplication.translate("MainWindow", u"1", None))
         self.action1_2.setText(QCoreApplication.translate("MainWindow", u"1", None))
         self.action2.setText(QCoreApplication.translate("MainWindow", u"2", None))
+        self.action.setText(QCoreApplication.translate("MainWindow", u"\u5173\u4e8eHterm", None))
+        self.action_2.setText(QCoreApplication.translate("MainWindow", u"\u5c40\u57df\u7f51\u626b\u63cf", None))
+        self.action_3.setText(QCoreApplication.translate("MainWindow", u"\u5de6\u4fa7\u680f", None))
+        self.action_4.setText(QCoreApplication.translate("MainWindow", u"\u53f3\u4fa7\u680f", None))
+        self.action_5.setText(QCoreApplication.translate("MainWindow", u"\u5feb\u901f\u547d\u4ee4\u680f", None))
 #if QT_CONFIG(tooltip)
         self.listWidget.setToolTip("")
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(whatsthis)
         self.listWidget.setWhatsThis("")
 #endif // QT_CONFIG(whatsthis)
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"\u5feb\u901f\u547d\u4ee4", None))
         self.menu.setTitle(QCoreApplication.translate("MainWindow", u"\u4f1a\u8bdd", None))
         self.session_menu.setTitle(QCoreApplication.translate("MainWindow", u"\u6240\u6709\u4f1a\u8bdd", None))
+        self.menu_2.setTitle(QCoreApplication.translate("MainWindow", u"\u5de5\u5177", None))
+        self.menu_3.setTitle(QCoreApplication.translate("MainWindow", u"\u5e03\u5c40", None))
+        self.menu_4.setTitle(QCoreApplication.translate("MainWindow", u"\u5e2e\u52a9", None))
     # retranslateUi
 

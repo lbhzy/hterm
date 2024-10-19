@@ -11,13 +11,13 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'common'))
 sys.path.append(os.path.join(os.path.dirname(__file__), 'ui'))
 
 from ui.main_ui import Ui_MainWindow
-from common.quick import QuickDialog, QuickButton
+from common.quick import QuickBar
 from common.session import SessionDialog
 from common.config import Config
 from terminal.terminal_ssh import SSHTerm
 from terminal.terminal_local import LocalTerm
 from terminal.terminal_serial import SerialTerm
-
+from terminal.terminal_base import Terminal
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -34,20 +34,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.setWindowOpacity(0.95)
         self.menu.setFocusPolicy(Qt.NoFocus)
 
-        self.create_session.triggered.connect(lambda: SessionDialog(self).exec())
+        self.session_dialog = SessionDialog(self)
+        self.session_dialog.accepted.connect(self.updateSessions)
+        self.create_session.triggered.connect(lambda: self.session_dialog.exec())
+        
+        # 快捷命令栏创建
+        self.quick_bar = QuickBar(self)
+        self.verticalLayout.addWidget(self.quick_bar)
+        self.quick_bar.send_signal.connect(self.send2Terminal)
 
-        # 快速命令按钮
-        self.pushButton.setIcon(qta.icon('mdi.speedometer'))
-        self.pushButton.setFocusPolicy(Qt.NoFocus)
-        self.pushButton.setStyleSheet("""
-            QPushButton {
-                    border: none;
-            }   
-            QPushButton:hover {
-                    background-color: #dddddd;
-            }  
-        """)
-        self.pushButton.clicked.connect(lambda: QuickDialog(self).exec())
         
         # 会话列表
         # self.listWidget.setVisible(False)
@@ -63,7 +58,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         # 状态栏
         self.statusbar.setStyleSheet("QStatusBar { padding-bottom: 20px; }")
-        left_widget = QLabel("就绪")
+        left_widget = QLabel("🟢就绪")
         self.statusbar.addWidget(left_widget, 1)  # 左侧信息，权重为 1
         button = QPushButton(qta.icon('fa5b.github'), 'Hterm Repository')
         button.setFocusPolicy(Qt.NoFocus)
@@ -83,22 +78,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.addWidget(button)
         # right_widget = QLabel("2024-8-16 0:11")
         # self.statusbar.addWidget(right_widget, 0)  # 右侧信息，权重为 0
+        self.updateSessions()
 
-        # config = Config("session")
-        # session_list = config.loadConfig()
-        # for session in session_list:
-        #     action = QAction(self)
-        #     action.setText(session['name'])
-        #     action.triggered.connect(self.openSession)
-        #     self.session_menu.addAction(action)
+    def send2Terminal(self, text):
+        term :Terminal = self.tabWidget.currentWidget()
+        if term:
+            term.preSendData(text)
 
-        config = Config("quick")
-        quick_list = config.loadConfig()
-        for quick in reversed(quick_list):
-            button = QuickButton(quick['type'], quick['content'])
-            button.setText(quick['name'])
-            button.setIcon(qta.icon('fa.send-o'))
-            self.horizontalLayout.insertWidget(1, button)
+    def updateSessions(self):
+        self.session_menu.clear()
+        config = Config("session")
+        sessions = config.loadConfig() 
+        for session in sessions:
+            action = QAction(self)
+            action.setText(session['name'])
+            action.triggered.connect(self.openSession)
+            self.session_menu.addAction(action)
+
+
 
     def openSession(self, item):
         # name = self.sender().text()
@@ -125,11 +122,11 @@ if __name__ == "__main__":
 
     app = QApplication()
 
-    # app.setStyle("fusion")
-    font = QFont()
-    font.setFamilies(["Consolas", "Microsoft YaHei UI"])
+    app.setStyle("fusion")
+    # font = QFont()
+    # font.setFamilies(["Consolas", "Microsoft YaHei UI"])
     # font.setPointSize(10)
-    app.setFont(font)
+    # app.setFont(font)
 
     w = MainWindow()
     w.show()

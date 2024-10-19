@@ -121,30 +121,6 @@
       </widget>
      </widget>
     </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>快速命令</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -164,21 +140,53 @@
      <property name="title">
       <string>所有会话</string>
      </property>
+     <property name="icon">
+      <iconset theme="address-book-new"/>
+     </property>
     </widget>
     <addaction name="create_session"/>
     <addaction name="session_menu"/>
     <addaction name="separator"/>
     <addaction name="setting"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>工具</string>
+    </property>
+    <addaction name="action_2"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>布局</string>
+    </property>
+    <addaction name="action_3"/>
+    <addaction name="action_4"/>
+    <addaction name="action_5"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>帮助</string>
+    </property>
+    <addaction name="action"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="create_session">
+   <property name="icon">
+    <iconset theme="contact-new"/>
+   </property>
    <property name="text">
     <string>新建会话</string>
    </property>
   </action>
   <action name="setting">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::DocumentProperties"/>
+   </property>
    <property name="text">
     <string>设置...</string>
    </property>
@@ -196,6 +204,37 @@
   <action name="action2">
    <property name="text">
     <string>2</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="icon">
+    <iconset theme="help-about"/>
+   </property>
+   <property name="text">
+    <string>关于Hterm</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::NetworkWireless"/>
+   </property>
+   <property name="text">
+    <string>局域网扫描</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>左侧栏</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>右侧栏</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="text">
+    <string>快速命令栏</string>
    </property>
   </action>
  </widget>
