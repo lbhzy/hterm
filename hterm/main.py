@@ -35,8 +35,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.menu.setFocusPolicy(Qt.NoFocus)
 
         self.session_dialog = SessionDialog(self)
-        self.session_dialog.accepted.connect(self.updateSessions)
+        self.session_dialog.accepted.connect(self.updateSessionMenu)
+        self.session_dialog.accepted.connect(self.listWidget.updateSessionList)
         self.create_session.triggered.connect(lambda: self.session_dialog.exec())
+        self.updateSessionMenu()
         
         # 快捷命令栏创建
         self.quick_bar = QuickBar(self)
@@ -45,9 +47,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         
         # 会话列表
-        # self.listWidget.setVisible(False)
-        self.listWidget.itemDoubleClicked.connect(self.openSession)
+        self.listWidget.itemDoubleClicked.connect(
+            lambda item: self.openSession(self.listWidget.indexFromItem(item).row()))
         self.listWidget.setSpacing(2)
+        self.listWidget.update_signal.connect(self.updateSessionMenu)
 
         self.tabWidget.setTabsClosable(True)
         self.tabWidget.tabCloseRequested.connect(
@@ -78,45 +81,54 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.addWidget(button)
         # right_widget = QLabel("2024-8-16 0:11")
         # self.statusbar.addWidget(right_widget, 0)  # 右侧信息，权重为 0
-        self.updateSessions()
+        
 
     def send2Terminal(self, text):
         term :Terminal = self.tabWidget.currentWidget()
         if term:
             term.preSendData(text)
 
-    def updateSessions(self):
+    def updateSessionMenu(self):
         self.session_menu.clear()
         config = Config("session")
-        sessions = config.loadConfig() 
+        sessions = config.loadConfig()
+        index = 0
         for session in sessions:
+            name = session['name'] if session['name'] else session['target']
             action = QAction(self)
-            action.setText(session['name'])
-            action.triggered.connect(self.openSession)
+            action.setText(name)
+            if session['type'] == 'serial':
+                action.setIcon(qta.icon('mdi6.serial-port'))
+            elif session['type'] == 'ssh':
+                action.setIcon(qta.icon('mdi.ssh'))
+            elif session['type'] == 'local': 
+                action.setIcon(qta.icon('ri.mini-program-line'))
+            action.triggered.connect(lambda checked=False, index=index: self.openSession(index))
             self.session_menu.addAction(action)
+            index += 1
 
 
+    def openSession(self, index):
+        cfg = Config("session")
+        sessions = cfg.loadConfig()
+        session = sessions[index]
+        if session['type'] == 'ssh':
+            term = SSHTerm(session['target'],
+                           session['port'],
+                           session['username'],
+                           session['password'])
+        elif session['type'] == 'serial':
+            term = SerialTerm(session['target'],session['baudrate'])
+        elif session['type'] == 'local':
+            term = LocalTerm(session['target'])
 
-    def openSession(self, item):
-        # name = self.sender().text()
-        name = item.text()
+        if session['name']:
+            name = session['name']
+        else:
+            name = session['target']
 
-        cfg = Config("session").getConfigByName(name)
-        if cfg['type'] == 'ssh':
-            term = SSHTerm(cfg['target'], cfg['port'], cfg['username'], cfg['password'])
-        elif cfg['type'] == 'serial':
-            term = SerialTerm(cfg['target'], cfg['baudrate'])
-        elif cfg['type'] == 'local':
-            term = LocalTerm(cfg['target'])
-
-        tab = QWidget()
-        # 创建 QTextEdit 并设置充满整个 tab
-        layout = QVBoxLayout(tab)
-        layout.addWidget(term)
-        tab.setLayout(layout)
-
-        # 将新 tab 添加到 tabWidget
-        self.tabWidget.addTab(term, cfg['target'])
+        self.tabWidget.addTab(term, name)
+        self.tabWidget.setCurrentIndex(self.tabWidget.indexOf(term))
 
 if __name__ == "__main__":
 

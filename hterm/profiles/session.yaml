@@ -14,11 +14,3 @@
   type: local
   target: powershell
 
-- name: "\u554A"
-  type: local
-  target: a
-
-- name: a
-  type: local
-  target: a
-

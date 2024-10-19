@@ -57,13 +57,15 @@ class SessionDialog(QDialog, Ui_SessionDialog):
                         'type': 'local', 
                         'target': self.shell_program.text()
                         }
-        print(session)
+
         cfg = Config('session')
         cfg.addConfig(session)
 
         super().accept()
 
 class SessionList(QListWidget):
+    """ 会话列表 """
+    update_signal = Signal()
 
     def __init__(self, parent: QWidget | None = ...) -> None:
         super().__init__(parent)
@@ -72,29 +74,41 @@ class SessionList(QListWidget):
         font.setPointSize(10)
         self.setFont(font)
 
-        self.menu = QMenu(self)
-        action = self.menu.addAction("新建会话")
         dialog = SessionDialog(self)
         dialog.accepted.connect(self.updateSessionList)
+
+        self.menu = QMenu(self)
+        action = self.menu.addAction("新建会话")
+        action.setIcon(qta.icon('ri.chat-new-fill'))
         action.triggered.connect(lambda: dialog.exec())
 
         self.item_menu = QMenu(self)
-        action1 = self.item_menu.addAction("修改")
-        action2 = self.item_menu.addAction("删除")
+        mod_action = self.item_menu.addAction("修改")
+        mod_action.setIcon(qta.icon('ei.edit'))
+        del_action = self.item_menu.addAction("删除")
+        del_action.setIcon(qta.icon('mdi.delete-alert'))
+        del_action.triggered.connect(self.deletSession)
 
 
         self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.customContextMenuRequested.connect(self.menuHandler)
+        self.customContextMenuRequested.connect(self.showMenu)
 
         self.updateSessionList()
 
+    def deletSession(self):
+        cfg = Config('session')
+        sessions = cfg.loadConfig()
+        del sessions[self.currentRow()]
+        cfg.saveNewConfig(sessions)
+        self.updateSessionList()
 
     def updateSessionList(self):
         self.clear()
         cfg = Config('session')
         sessions = cfg.loadConfig()
         for session in sessions:
-            item = QListWidgetItem(session['name'])
+            name = session['name'] if session['name'] else session['target']
+            item = QListWidgetItem(name)
             if session['type'] == 'serial':
                 item.setIcon(qta.icon('mdi6.serial-port'))
             elif session['type'] == 'ssh':
@@ -102,9 +116,10 @@ class SessionList(QListWidget):
             elif session['type'] == 'local': 
                 item.setIcon(qta.icon('ri.mini-program-line'))
             self.addItem(item)
+        self.update_signal.emit()
         
 
-    def menuHandler(self, pos):
+    def showMenu(self, pos):
         item = self.itemAt(pos)
         if item:
             menu = self.item_menu
@@ -116,9 +131,6 @@ class SessionList(QListWidget):
 if __name__ == "__main__":
 
     app = QApplication()
-
-    w = SessionDialog()
-    w.show()
 
     widget = QWidget()
     layout = QVBoxLayout(widget)
