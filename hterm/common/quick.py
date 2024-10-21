@@ -179,9 +179,6 @@ class QuickBar(QWidget):
         self.layout = QHBoxLayout()
         self.layout.setSpacing(0)
         self.layout.setContentsMargins(0, 0, 0, 0)
-        
-        self.dialog = QuickDialog(self)
-        self.dialog.accepted.connect(self.updateBar)
 
         self.button = QPushButton(qta.icon('mdi.speedometer'), "快捷命令")
         self.button.setFixedSize(80, 20)
@@ -194,13 +191,18 @@ class QuickBar(QWidget):
                     background-color: #dddddd;
             }  
         """)
-        self.button.clicked.connect(lambda: self.dialog.exec())
+        self.button.clicked.connect(self.openDialog)
 
         self.widget.addWidget(self.button)
         self.widget.addLayout(self.layout)
         self.widget.addItem(QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
 
         self.updateBar()
+
+    def openDialog(self):
+        dialog = QuickDialog(self)
+        dialog.accepted.connect(self.updateBar)
+        dialog.exec()
 
     def updateBar(self):
         while self.layout.count():

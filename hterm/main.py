@@ -35,10 +35,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         # 菜单栏相关
         self.menu.setFocusPolicy(Qt.NoFocus)
-        self.session_dialog = SessionDialog(self)
-        self.session_dialog.accepted.connect(self.updateSessionMenu)
-        self.session_dialog.accepted.connect(self.listWidget.updateSessionList)
-        self.create_session.triggered.connect(lambda: self.session_dialog.exec())
+        self.create_session.triggered.connect(self.openSessionDialog)
         self.updateSessionMenu()
         self.left_action.triggered.connect(lambda check: self.listWidget.setVisible(check))
         self.quicbar_action.triggered.connect(lambda check: self.quick_bar.setVisible(check))
@@ -85,6 +82,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # right_widget = QLabel("2024-8-16 0:11")
         # self.statusbar.addWidget(right_widget, 0)  # 右侧信息，权重为 0
         
+    def openSessionDialog(self):
+        dialog = SessionDialog(self)
+        dialog.accepted.connect(self.updateSessionMenu)
+        dialog.accepted.connect(self.listWidget.updateSessionList)
+        dialog.exec()
 
     def send2Terminal(self, text):
         term :Terminal = self.tabWidget.currentWidget()

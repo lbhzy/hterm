@@ -18,7 +18,6 @@ class SessionDialog(QDialog, Ui_SessionDialog):
 
         self.setupUi(self)
 
-    def exec(self):
         self.tabWidget.setCurrentIndex(0)
         # SSH相关
         # self.ssh_name.setPlaceholderText('缺省使用服务器名称')
@@ -74,13 +73,10 @@ class SessionList(QListWidget):
         font.setPointSize(10)
         self.setFont(font)
 
-        dialog = SessionDialog(self)
-        dialog.accepted.connect(self.updateSessionList)
-
         self.menu = QMenu(self)
         action = self.menu.addAction("新建会话")
         action.setIcon(qta.icon('ri.chat-new-fill'))
-        action.triggered.connect(lambda: dialog.exec())
+        action.triggered.connect(self.openDialog)
 
         self.item_menu = QMenu(self)
         mod_action = self.item_menu.addAction("修改")
@@ -94,6 +90,11 @@ class SessionList(QListWidget):
         self.customContextMenuRequested.connect(self.showMenu)
 
         self.updateSessionList()
+
+    def openDialog(self):
+        dialog = SessionDialog(self)
+        dialog.accepted.connect(self.updateSessionList)
+        dialog.exec()
 
     def deletSession(self):
         cfg = Config('session')
