@@ -20,11 +20,11 @@ class SessionDialog(QDialog, Ui_SessionDialog):
 
         self.tabWidget.setCurrentIndex(0)
         # SSH相关
-        # self.ssh_name.setPlaceholderText('缺省使用服务器名称')
+        self.ssh_name.setPlaceholderText('缺省使用服务器名称')
         self.ssh_port.setText('22')
         self.ssh_password.setEchoMode(QLineEdit.Password)
         # 串口相关
-        # self.serial_name.setPlaceholderText('缺省使用串口名称')
+        self.serial_name.setPlaceholderText('缺省使用串口名称')
         self.serial_baud.setEditable(True)
         self.serial_baud.addItems(['9600', '115200'])
         self.serial_baud.setCurrentIndex(1)
@@ -33,7 +33,8 @@ class SessionDialog(QDialog, Ui_SessionDialog):
         for port in ports:
             self.serial_port.addItem(port.device)
             # print(f"设备: {port.device}, 描述: {port.description}, 硬件ID: {port.hwid}")
-        return super().exec()
+        # 本地程序相关
+        self.shell_name.setPlaceholderText('缺省使用程序名')
 
     def accept(self):
         index = self.tabWidget.currentIndex()

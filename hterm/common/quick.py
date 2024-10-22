@@ -53,15 +53,12 @@ class QuickDialog(QDialog, Ui_Dialog):
         self.delButton.clicked.connect(self.delete)
         self.pushButton.clicked.connect(self.testRun)
         
-    def exec(self):
         self.cfg = Config("quick")
         self.quicks = self.cfg.loadConfig()
         for quick in self.quicks:
             self.listWidget.addItem(quick["name"])
         self.listWidget.setCurrentRow(0)
-
-        return super().exec()
-
+        
 
     def contentChanged(self):
         index = self.listWidget.currentRow()
@@ -90,12 +87,12 @@ class QuickDialog(QDialog, Ui_Dialog):
 
     def testRun(self):
         text = self.textEdit.toPlainText()
-        if not text:
-            return
+
         if self.comboBox.currentIndex() == 1:
             text = runPythonString(self, text)
         
-        QMessageBox.information(self, "运行成功", text)            
+        if text:
+            QMessageBox.information(self, "运行成功", text)            
 
     def showQuick(self, index):
         if self.listWidget.currentRow() < 0:
