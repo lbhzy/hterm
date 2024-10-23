@@ -1,6 +1,11 @@
 - name: 发送文本
   pattern: "hello"
   action: send text
-  text: ok
+  type: text
+  content: 666
 
-- name: 执行脚本
+- name: 脚本发送
+  pattern: "hello"
+  action: send text
+  type: script
+  content:
