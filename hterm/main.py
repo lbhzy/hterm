@@ -3,6 +3,7 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
 import os
+import re
 import sys
 import qtawesome as qta
 
@@ -43,7 +44,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 快捷命令栏创建
         self.quick_bar = QuickBar(self)
         self.verticalLayout.addWidget(self.quick_bar)
-        self.quick_bar.send_signal.connect(self.send2Terminal)
+        self.quick_bar.send_signal.connect(self.send2Session)
 
         
         # 会话列表
@@ -88,10 +89,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         dialog.accepted.connect(self.listWidget.updateSessionList)
         dialog.exec()
 
-    def send2Terminal(self, text):
-        term :Terminal = self.tabWidget.currentWidget()
-        if term:
-            term.preSendData(text)
+    def replaceMatch(self, match):
+        idx = ord(match.group()[2]) - ord('A') + 1
+        return idx.to_bytes().decode()
+
+    def send2Session(self, text, term=None):
+        if term == None:
+            term: Terminal = self.tabWidget.currentWidget()
+            text = re.sub(r"\{\^[A-Z]\}", self.replaceMatch, text)
+        if not term:
+            return
+        
+        lines = text.splitlines(True)
+        for line in lines:
+            text = text[text.find('\n') + 1:] if '\n' in text else text
+            if '{delay' in line:
+                match = re.search(r'\d+', line)
+                if match:
+                    delay = int(match.group())
+                    timer = QTimer(self)
+                    timer.setSingleShot(True)
+                    timer.timeout.connect(lambda: self.send2Session(text, term))
+                    timer.start(delay)
+                    return
+                continue
+
+            term.preSendData(line)
 
     def updateSessionMenu(self):
         self.session_menu.clear()
