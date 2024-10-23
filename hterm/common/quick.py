@@ -13,7 +13,14 @@ from ui.quick_ui import Ui_Dialog
 from config import Config
 
 MSG0 = """例如:
-echo "Hello Hterm" """
+echo "Hello Hterm"{^C}
+{delay 10}
+echo "10ms later"
+
+特殊字段
+{^[A-Z]}        发送 CTRL+[A-Z]
+{delay n}       延时 n 毫秒
+"""
 MSG1 = """例如:
 import you_need
 

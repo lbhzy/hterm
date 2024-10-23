@@ -90,7 +90,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         dialog.exec()
 
     def replaceMatch(self, match):
-        idx = ord(match.group()[2]) - ord('A') + 1
+        idx = ord(match.group()[2]) - ord('@')
         return idx.to_bytes().decode()
 
     def send2Session(self, text, term=None):
