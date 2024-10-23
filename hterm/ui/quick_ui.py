@@ -44,6 +44,7 @@ class Ui_Dialog(object):
         self.verticalLayout_2.addWidget(self.listWidget)
 
         self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setSpacing(6)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.addButton = QToolButton(Dialog)
         self.addButton.setObjectName(u"addButton")
@@ -54,6 +55,16 @@ class Ui_Dialog(object):
         self.delButton.setObjectName(u"delButton")
 
         self.horizontalLayout_2.addWidget(self.delButton)
+
+        self.upButton = QToolButton(Dialog)
+        self.upButton.setObjectName(u"upButton")
+
+        self.horizontalLayout_2.addWidget(self.upButton)
+
+        self.downButton = QToolButton(Dialog)
+        self.downButton.setObjectName(u"downButton")
+
+        self.horizontalLayout_2.addWidget(self.downButton)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
@@ -137,6 +148,8 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
         self.addButton.setText(QCoreApplication.translate("Dialog", u"+", None))
         self.delButton.setText(QCoreApplication.translate("Dialog", u"-", None))
+        self.upButton.setText(QCoreApplication.translate("Dialog", u"\u2191", None))
+        self.downButton.setText(QCoreApplication.translate("Dialog", u"\u2193", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"\u6807\u7b7e", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"\u7c7b\u578b", None))
         self.comboBox.setItemText(0, QCoreApplication.translate("Dialog", u"\u539f\u59cb\u6587\u672c", None))
