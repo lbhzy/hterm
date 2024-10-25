@@ -16,6 +16,8 @@ from highlight import Highlighter
 
 class Terminal(QTextEdit, Color, VT100Paser):
     """ 基于QTextEdit实现的终端小部件 """
+    text_added = Signal(str)
+
     def __init__(self):
         super().__init__()
 
@@ -425,6 +427,7 @@ class Terminal(QTextEdit, Color, VT100Paser):
         position = self.textCursor().position()
         # 更新数据到终端
         self.insertPlainText(text)
+        self.text_added.emit(text)
         # 删除光标后方数据(只是本行的)，相当于覆盖写入
         cursor = self.textCursor()
         cursor.setPosition(cursor.position(), QTextCursor.MoveAnchor)

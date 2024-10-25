@@ -12,6 +12,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'common'))
 sys.path.append(os.path.join(os.path.dirname(__file__), 'ui'))
 
 from ui.main_ui import Ui_MainWindow
+from common.trigger import Trigger, TriggerDialog
 from common.quick import QuickBar
 from common.session import SessionDialog
 from common.config import Config
@@ -150,6 +151,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif session['type'] == 'local':
             term = LocalTerm(session['target'])
 
+        
+        trigger = Trigger(term)
+        term.trigger = trigger
+        term.text_added.connect(trigger.text_added)
         if session['name']:
             name = session['name']
         else:
