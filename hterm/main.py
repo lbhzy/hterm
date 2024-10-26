@@ -41,7 +41,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.updateSessionMenu()
         self.left_action.triggered.connect(lambda check: self.listWidget.setVisible(check))
         self.quicbar_action.triggered.connect(lambda check: self.quick_bar.setVisible(check))
-        
+        self.trigger_action.triggered.connect(self.openTriggerDialog)
+
         # 快捷命令栏创建
         self.quick_bar = QuickBar(self)
         self.verticalLayout.addWidget(self.quick_bar)
@@ -89,6 +90,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         dialog.accepted.connect(self.updateSessionMenu)
         dialog.accepted.connect(self.listWidget.updateSessionList)
         dialog.exec()
+
+    def openTriggerDialog(self):
+        dialog = TriggerDialog(self)
+        dialog.accepted.connect(self.updateTrigger)
+        dialog.exec()
+
+    def updateTrigger(self):
+        for i in range(self.tabWidget.count()):
+            term = self.tabWidget.widget(i)
+            term.trigger.update()
 
     def replaceMatch(self, match):
         idx = ord(match.group()[2]) - ord('@')
@@ -155,6 +166,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         trigger = Trigger(term)
         term.trigger = trigger
         term.text_added.connect(trigger.text_added)
+        trigger.text_send.connect(lambda text: self.send2Session(text, term))
         if session['name']:
             name = session['name']
         else:

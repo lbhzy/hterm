@@ -153,6 +153,9 @@
     <property name="title">
      <string>工具</string>
     </property>
+    <addaction name="separator"/>
+    <addaction name="trigger_action"/>
+    <addaction name="separator"/>
     <addaction name="action_2"/>
    </widget>
    <widget class="QMenu" name="menu_3">
@@ -250,6 +253,14 @@
    </property>
    <property name="text">
     <string>快速命令栏</string>
+   </property>
+  </action>
+  <action name="trigger_action">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::MediaPlaylistRepeat"/>
+   </property>
+   <property name="text">
+    <string>触发器</string>
    </property>
   </action>
  </widget>

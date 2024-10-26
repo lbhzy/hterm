@@ -43,15 +43,15 @@ class Ui_Dialog(object):
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.pushButton = QPushButton(Dialog)
-        self.pushButton.setObjectName(u"pushButton")
+        self.add_button = QPushButton(Dialog)
+        self.add_button.setObjectName(u"add_button")
 
-        self.horizontalLayout_2.addWidget(self.pushButton)
+        self.horizontalLayout_2.addWidget(self.add_button)
 
-        self.pushButton_2 = QPushButton(Dialog)
-        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.del_button = QPushButton(Dialog)
+        self.del_button.setObjectName(u"del_button")
 
-        self.horizontalLayout_2.addWidget(self.pushButton_2)
+        self.horizontalLayout_2.addWidget(self.del_button)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
@@ -66,42 +66,53 @@ class Ui_Dialog(object):
 
         self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label)
 
-        self.lineEdit = QLineEdit(Dialog)
-        self.lineEdit.setObjectName(u"lineEdit")
+        self.name_edit = QLineEdit(Dialog)
+        self.name_edit.setObjectName(u"name_edit")
 
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.lineEdit)
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.name_edit)
 
         self.label_2 = QLabel(Dialog)
         self.label_2.setObjectName(u"label_2")
 
         self.formLayout.setWidget(1, QFormLayout.LabelRole, self.label_2)
 
-        self.lineEdit_2 = QLineEdit(Dialog)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
+        self.pattern_edit = QLineEdit(Dialog)
+        self.pattern_edit.setObjectName(u"pattern_edit")
 
-        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.lineEdit_2)
+        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.pattern_edit)
 
         self.label_3 = QLabel(Dialog)
         self.label_3.setObjectName(u"label_3")
 
         self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_3)
 
-        self.comboBox = QComboBox(Dialog)
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.setObjectName(u"comboBox")
+        self.action_combobox = QComboBox(Dialog)
+        self.action_combobox.addItem("")
+        self.action_combobox.setObjectName(u"action_combobox")
 
-        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.comboBox)
+        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.action_combobox)
 
         self.label_5 = QLabel(Dialog)
         self.label_5.setObjectName(u"label_5")
 
-        self.formLayout.setWidget(3, QFormLayout.LabelRole, self.label_5)
+        self.formLayout.setWidget(4, QFormLayout.LabelRole, self.label_5)
 
         self.textEdit = QTextEdit(Dialog)
         self.textEdit.setObjectName(u"textEdit")
 
-        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.textEdit)
+        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.textEdit)
+
+        self.label_4 = QLabel(Dialog)
+        self.label_4.setObjectName(u"label_4")
+
+        self.formLayout.setWidget(3, QFormLayout.LabelRole, self.label_4)
+
+        self.type_combobox = QComboBox(Dialog)
+        self.type_combobox.addItem("")
+        self.type_combobox.addItem("")
+        self.type_combobox.setObjectName(u"type_combobox")
+
+        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.type_combobox)
 
 
         self.horizontalLayout.addLayout(self.formLayout)
@@ -126,15 +137,18 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.pushButton.setText(QCoreApplication.translate("Dialog", u"\u65b0\u589e", None))
-        self.pushButton_2.setText(QCoreApplication.translate("Dialog", u"\u5220\u9664", None))
+        self.add_button.setText(QCoreApplication.translate("Dialog", u"\u65b0\u589e", None))
+        self.del_button.setText(QCoreApplication.translate("Dialog", u"\u5220\u9664", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"\u540d\u79f0", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"\u5339\u914d", None))
-        self.lineEdit_2.setPlaceholderText(QCoreApplication.translate("Dialog", u"\u6b63\u5219\u8868\u8fbe\u5f0f", None))
+        self.pattern_edit.setPlaceholderText(QCoreApplication.translate("Dialog", u"\u6b63\u5219\u8868\u8fbe\u5f0f", None))
         self.label_3.setText(QCoreApplication.translate("Dialog", u"\u884c\u4e3a", None))
-        self.comboBox.setItemText(0, QCoreApplication.translate("Dialog", u"\u53d1\u9001\u6587\u672c", None))
-        self.comboBox.setItemText(1, QCoreApplication.translate("Dialog", u"\u663e\u793a\u63d0\u793a", None))
+        self.action_combobox.setItemText(0, QCoreApplication.translate("Dialog", u"\u53d1\u9001\u6587\u672c", None))
 
         self.label_5.setText(QCoreApplication.translate("Dialog", u"\u5185\u5bb9", None))
+        self.label_4.setText(QCoreApplication.translate("Dialog", u"\u7c7b\u578b", None))
+        self.type_combobox.setItemText(0, QCoreApplication.translate("Dialog", u"\u539f\u59cb\u6587\u672c", None))
+        self.type_combobox.setItemText(1, QCoreApplication.translate("Dialog", u"Python\u811a\u672c", None))
+
     # retranslateUi
 

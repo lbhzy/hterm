@@ -1,11 +1,16 @@
 - name: 发送文本
-  pattern: "hello"
+  enable: true
+  pattern: hello
   action: send text
   type: text
-  content: 666
+  content: 'echo ok
+
+    '
 
 - name: 脚本发送
-  pattern: "hello"
+  enable: true
+  pattern: '123'
   action: send text
   type: script
-  content:
+  content: "import time\n\ndef main(match):\n    return f\"echo no\\r\""
+
