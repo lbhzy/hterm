@@ -82,7 +82,7 @@ class TriggerDialog(QDialog, Ui_Dialog):
         self.setupUi(self)
         self.setWindowTitle("触发器管理")
 
-        self.textEdit.setPlaceholderText(MSG1)
+        self.textEdit.setPlaceholderText(MSG0)
         self.listWidget.itemChanged.connect(self.itemChanged)
         self.listWidget.currentRowChanged.connect(self.currentRowChanged)
         self.name_edit.textChanged.connect(self.nameChanged)
