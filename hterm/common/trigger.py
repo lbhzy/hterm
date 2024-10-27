@@ -139,7 +139,7 @@ class TriggerDialog(QDialog, Ui_Dialog):
         if row < 0:
             self.name_edit.setText("")
             self.pattern_edit.setText("")
-            self.textEdit.setText.setText("")
+            self.textEdit.setText("")
             return
         # print(self.triggers[row])
         self.name_edit.setText(self.triggers[row]["name"])
@@ -157,7 +157,7 @@ class TriggerDialog(QDialog, Ui_Dialog):
     def add(self):
         self.triggers.append({'name': '未命名',
                               'enable': True,
-                              'pattern': 'text',
+                              'pattern': '',
                               'action': 'send text',
                               'type': 'text',
                               'content': ''})
@@ -166,8 +166,8 @@ class TriggerDialog(QDialog, Ui_Dialog):
         item.setCheckState(Qt.Checked)
         self.listWidget.addItem(item)
         self.listWidget.setCurrentRow(self.listWidget.count() - 1)
-        self.lineEdit.selectAll()
-        self.lineEdit.setFocus()
+        self.name_edit.selectAll()
+        self.name_edit.setFocus()
 
     def delete(self):
         if self.listWidget.count() > 0:
