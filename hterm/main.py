@@ -108,10 +108,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def send2Session(self, text, term=None):
         if term == None:
             term: Terminal = self.tabWidget.currentWidget()
-            text = re.sub(r"\{\^[A-Z]\}", self.replaceMatch, text)
         if not term:
             return
         
+        text = re.sub(r"\{\^[A-Z]\}", self.replaceMatch, text)
         lines = text.splitlines(True)
         for line in lines:
             text = text[text.find('\n') + 1:] if '\n' in text else text
