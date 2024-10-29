@@ -164,7 +164,8 @@
     </property>
     <addaction name="left_action"/>
     <addaction name="right_action"/>
-    <addaction name="quicbar_action"/>
+    <addaction name="quickbar_action"/>
+    <addaction name="statusbar_action"/>
    </widget>
    <widget class="QMenu" name="menu_4">
     <property name="title">
@@ -240,11 +241,14 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>右侧栏</string>
    </property>
   </action>
-  <action name="quicbar_action">
+  <action name="quickbar_action">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -261,6 +265,17 @@
    </property>
    <property name="text">
     <string>触发器</string>
+   </property>
+  </action>
+  <action name="statusbar_action">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>状态栏</string>
    </property>
   </action>
  </widget>

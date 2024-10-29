@@ -33,15 +33,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle("Hterm")
         self.setWindowIcon(QIcon(':/icon.png'))
         self.resize(QGuiApplication.primaryScreen().size()*0.7)
-        # self.setWindowOpacity(0.95)
+        self.setWindowOpacity(0.95)
         
         # 菜单栏相关
         self.menu.setFocusPolicy(Qt.NoFocus)
         self.create_session.triggered.connect(self.openSessionDialog)
         self.updateSessionMenu()
         self.left_action.triggered.connect(lambda check: self.listWidget.setVisible(check))
-        self.quicbar_action.triggered.connect(lambda check: self.quick_bar.setVisible(check))
+        self.quickbar_action.triggered.connect(lambda check: self.quick_bar.setVisible(check))
+        self.statusbar_action.triggered.connect(lambda check: self.statusbar.setVisible(check))
         self.trigger_action.triggered.connect(self.openTriggerDialog)
+        self.about_action.triggered.connect(lambda: QMessageBox.information(self, "关于Hterm", "Power by lbhzy"+10*" "))
 
         # 快捷命令栏创建
         self.quick_bar = QuickBar(self)
