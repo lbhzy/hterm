@@ -34,6 +34,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowIcon(QIcon(':/icon.png'))
         self.resize(QGuiApplication.primaryScreen().size()*0.7)
         self.setWindowOpacity(0.95)
+
+        # 分离器设置
+        self.splitter.setStretchFactor(0, 0)
+        self.splitter.setStretchFactor(1, 1)
+        self.splitter.setSizes([200, self.width() - 200])
         
         # 菜单栏相关
         self.menu.setFocusPolicy(Qt.NoFocus)
