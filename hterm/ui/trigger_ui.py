@@ -78,6 +78,10 @@ class Ui_Dialog(object):
 
         self.pattern_edit = QLineEdit(Dialog)
         self.pattern_edit.setObjectName(u"pattern_edit")
+        font = QFont()
+        font.setFamilies([u"Consolas"])
+        font.setPointSize(10)
+        self.pattern_edit.setFont(font)
 
         self.formLayout.setWidget(1, QFormLayout.FieldRole, self.pattern_edit)
 
@@ -99,6 +103,11 @@ class Ui_Dialog(object):
 
         self.textEdit = QTextEdit(Dialog)
         self.textEdit.setObjectName(u"textEdit")
+        font1 = QFont()
+        font1.setFamilies([u"Consolas"])
+        font1.setPointSize(11)
+        self.textEdit.setFont(font1)
+        self.textEdit.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
 
         self.formLayout.setWidget(4, QFormLayout.FieldRole, self.textEdit)
 

@@ -115,6 +115,7 @@ class Ui_Dialog(object):
         font.setFamilies([u"Consolas"])
         font.setPointSize(11)
         self.textEdit.setFont(font)
+        self.textEdit.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
 
         self.formLayout.setWidget(2, QFormLayout.FieldRole, self.textEdit)
 

@@ -91,8 +91,6 @@ class TriggerDialog(QDialog, Ui_Dialog):
         self.textEdit.textChanged.connect(self.contentChanged)
         self.add_button.clicked.connect(self.add)
         self.del_button.clicked.connect(self.delete)
-        
-
 
         self.triggers = Config("trigger").loadConfig()
         for trigger in self.triggers:
