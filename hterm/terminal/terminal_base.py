@@ -3,7 +3,6 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
 import os
-import sys
 import time
 import winsound
 import pyfiglet
@@ -14,76 +13,34 @@ from color import Color
 from highlight import Highlighter
 
 
-class Terminal(QTextEdit, Color, VT100Paser):
+class Terminal(QTextEdit, VT100Paser):
     """ 基于QTextEdit实现的终端小部件 """
     text_added = Signal(str)
 
-    def __init__(self):
+    def __init__(self, bg_img=None, scheme="Horizon Dark"):
         super().__init__()
 
-        self.fmt = QTextCharFormat()
-        self.pos = [0, 0]
-        if getattr(sys, 'frozen', False):
-            base_dir = os.path.dirname(sys.argv[0])
-        else:
-            base_dir = os.path.dirname(os.path.dirname(__file__))
-        self.bg_img = os.path.join(base_dir, 'images', 'bg1.jpg')
+        self.bg_img     = bg_img
+        self.scheme     = Color().getScheme(scheme)
+        self.fmt        = QTextCharFormat()
+        self.pos        = [0, 0]
+        self.input_bar  = None
+        self.find_bar   = None
 
         self.setupUi()
-        self.setupSub()
-
-        # 终端语法高亮
-        self.highlighter = Highlighter(self.scheme, self.document())
-
-        # self.setLineWrapMode(QTextEdit.WidgetWidth)
+        Highlighter(self.scheme, self.document())   # 终端语法高亮
 
         # 快捷键
-        self.shortcut_copy = QKeySequence("ALT+C")
-        self.shortcut_paste = QKeySequence("ALT+V")
-        self.shortcut_clear = QKeySequence("ALT+S")
-        self.shortcut_find = QKeySequence("ALT+F")
-        self.shortcut_input = QKeySequence("ALT+I")
-        QShortcut(self.shortcut_copy, self).activated.connect(lambda: self.copy())
-        QShortcut(self.shortcut_paste, self).activated.connect(lambda: self.paste())
-        QShortcut(self.shortcut_clear, self).activated.connect(lambda: self.clear())
-        QShortcut(self.shortcut_input, self).activated.connect(lambda: self.input())
-        QShortcut(self.shortcut_find, self).activated.connect(lambda: self.find())
+        QShortcut(QKeySequence("ALT+C"), self).activated.connect(lambda: self.copy())
+        QShortcut(QKeySequence("ALT+V"), self).activated.connect(lambda: self.paste())
+        QShortcut(QKeySequence("ALT+S"), self).activated.connect(lambda: self.clear())
+        QShortcut(QKeySequence("ALT+F"), self).activated.connect(lambda: self.input())
+        QShortcut(QKeySequence("ALT+I"), self).activated.connect(lambda: self.find())
 
         # 显示banner
         # banner = pyfiglet.figlet_format("hTerm", font="dos_rebel")
         # self.insertPlainText(banner)
         # print(pyfiglet.FigletFont.getFonts())
-
-
-    def setupSub(self):
-        """ 终端子控件 """
-        # QLabel作终端背景图片
-        self.background_label = QLabel(self)
-        pixmap = QPixmap(self.bg_img)
-        size = QGuiApplication.primaryScreen().size()
-        pixmap = pixmap.scaled(size, Qt.AspectRatioMode.KeepAspectRatioByExpanding)
-        self.background_label.setPixmap(pixmap)
-        self.background_label.lower()
-
-        # 查找栏
-        self.find_bar = QLineEdit(self)
-        self.find_bar.setVisible(False)
-        self.find_bar.setGeometry(self.width()-200, 20, 180, 30)
-        palette = QPalette()
-        palette.setColor(QPalette.Base, QColor(self.scheme['Foreground']))
-        palette.setColor(QPalette.Text, QColor(self.scheme['Background']))
-        self.find_bar.setPalette(palette)
-        self.find_bar.returnPressed.connect(lambda: print(self.find_bar.text()))
-        # self.find_bar.show()
-        # self.find_bar.setFocus()
-
-        # 输入栏
-        self.input_bar = QLineEdit(self)
-        self.input_bar.setVisible(False)
-        self.input_bar.setPlaceholderText("输入文本，回车发送")
-        self.find_bar.setPalette(palette)
-        self.input_bar.returnPressed.connect(lambda: (self.preSendData(self.input_bar.text()), self.input_bar.clear()))
-        self.input_bar.focusOutEvent = lambda _: self.input_bar.hide()
 
     def setupUi(self):
         """ 终端UI设置 """
@@ -91,32 +48,34 @@ class Terminal(QTextEdit, Color, VT100Paser):
         palette = QPalette()
         palette.setColor(QPalette.Window, QColor(self.scheme['Background']))
         base_color = QColor(self.scheme['Background'])
-        base_color.setAlpha(20)
+        if self.bg_img:
+            base_color.setAlpha(20)
         palette.setColor(QPalette.Base, base_color)
         palette.setColor(QPalette.Text, QColor(self.scheme['Foreground']))
         self.setPalette(palette)
-
+        
+        # QLabel作终端背景图片
+        if self.bg_img:
+            self.background_label = QLabel(self)
+            pixmap = QPixmap(self.bg_img)
+            size = QGuiApplication.primaryScreen().size()
+            pixmap = pixmap.scaled(size, Qt.AspectRatioMode.KeepAspectRatioByExpanding)
+            self.background_label.setPixmap(pixmap)
+            self.background_label.lower()
+        
         # 设置字体
         font = QFont()
         font.setFamilies(["Cascadia Mono", "Consolas", "Microsoft YaHei UI"])
         font.setPointSize(14)
         self.setFont(font)
 
-        # TODO:设置光标样式
-        # 隐藏光标
-        # self.setCursorWidth(0)  
-        # 显示光标
-        # self.setCursorWidth(20)
-
-        # 设置图标
+        # 设置窗口相关
         self.setWindowIcon(qta.icon('ph.terminal-window-fill'))
-        # self.setWindowIcon(qta.icon('ph.terminal-window-light'))
-        
         self.setWindowTitle("Terminal")
         self.setWindowOpacity(0.95)
         self.resize(QGuiApplication.primaryScreen().size()*0.6)
-        # 无边框
-        # self.setWindowFlags(Qt.FramelessWindowHint)
+        # self.setWindowFlags(Qt.FramelessWindowHint)   # 无边框
+        
         # 取消蓝线
         # self.setStyleSheet("QTextEdit::selection { border: 0; background: transparent; }")
 
@@ -295,30 +254,34 @@ class Terminal(QTextEdit, Color, VT100Paser):
             clipboard.setText(text)
 
     def find(self):
-        self.find_bar = QLineEdit(self)
+        if not self.find_bar:
+            self.find_bar = QLineEdit(self)
+            palette = QPalette()
+            palette.setColor(QPalette.Base, QColor(self.scheme['Foreground']))
+            palette.setColor(QPalette.Text, QColor(self.scheme['Background']))
+            self.find_bar.setPalette(palette)
+            self.find_bar.returnPressed.connect(lambda: print(self.find_bar.text()))
+            self.find_bar.focusOutEvent = lambda _: self.find_bar.hide()
         self.find_bar.setGeometry(self.width()-200, 20, 180, 30)
-        palette = QPalette()
-        palette.setColor(QPalette.Base, QColor(self.scheme['Foreground']))
-        palette.setColor(QPalette.Text, QColor(self.scheme['Background']))
-        self.find_bar.setPalette(palette)
-        self.find_bar.returnPressed.connect(lambda: print(self.find_bar.text()))
-        self.find_bar.show()
+        # self.find_bar.show()
+        self.find_bar.setVisible(True)
         self.find_bar.setFocus()
 
-        self.progress_bar = CircularProgressBar(self)
-
-        self.progress_bar.show()
-        # text_to_find = QInputDialog.getText(self, "Find", "Enter text to find:")[0]
-        # print(text_to_find)
-        # self.find(text_to_find)
-
     def input(self):
+        if not self.input_bar:
+            self.input_bar = QLineEdit(self)
+            self.input_bar.setPlaceholderText("输入文本，回车发送")
+            palette = QPalette()
+            palette.setColor(QPalette.Base, QColor(self.scheme['Foreground']))
+            palette.setColor(QPalette.Text, QColor(self.scheme['Background']))
+            self.input_bar.setPalette(palette)
+            self.input_bar.returnPressed.connect(lambda: (self.preSendData(self.input_bar.text()), self.input_bar.clear()))
+            self.input_bar.focusOutEvent = lambda _: self.input_bar.hide()
         height = 30
         width = self.width()/1.5
         self.input_bar.setGeometry((self.width()-width)/2, self.height()-height-20, width, height)
         self.input_bar.setVisible(True)
         self.input_bar.setFocus()
-        # self.input_bar.setFont(self.font())
 
     def contextMenuEvent(self, event):
         """ 右键显示菜单 """
@@ -546,9 +509,12 @@ class Terminal(QTextEdit, Color, VT100Paser):
 if __name__ == "__main__":
 
     app = QApplication()
+
+    base_dir = os.path.dirname(os.path.dirname(__file__))
+    img = os.path.join(base_dir, 'images', 'bg1.jpg')
+    
     term = Terminal()
     term.show()
-    # term.container.show()
 
     app.exec()
     

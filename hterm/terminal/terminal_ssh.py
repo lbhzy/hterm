@@ -10,8 +10,8 @@ from terminal_base import Terminal
 
 class SSHTerm(Terminal):
     """ SSH终端 """
-    def __init__(self, server, port, username, password):
-        super().__init__()
+    def __init__(self, server, port, username, password, bg_img=None, scheme="Horizon Dark"):
+        super().__init__(bg_img, scheme)
 
         self.server = server
         self.port = port

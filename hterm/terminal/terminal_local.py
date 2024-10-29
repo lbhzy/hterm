@@ -10,8 +10,8 @@ from terminal_base import Terminal
 
 class LocalTerm(Terminal):
     """ 本地程序终端 """
-    def __init__(self, prog: str):
-        super().__init__()
+    def __init__(self, prog: str, bg_img=None, scheme="Horizon Dark"):
+        super().__init__(bg_img, scheme)
 
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
