@@ -187,10 +187,9 @@ if __name__ == "__main__":
     app = QApplication()
 
     app.setStyle("fusion")
-    # font = QFont()
-    # font.setFamilies(["Consolas", "Microsoft YaHei UI"])
-    # font.setPointSize(10)
-    # app.setFont(font)
+    font = QFont()
+    font.setFamilies(["Consolas", "Microsoft YaHei UI"])
+    app.setFont(font)
 
     w = MainWindow()
     w.show()
