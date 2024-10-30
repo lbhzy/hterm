@@ -181,6 +181,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.tabWidget.addTab(term, name)
         self.tabWidget.setCurrentIndex(self.tabWidget.indexOf(term))
+        term.setFocus()
 
 if __name__ == "__main__":
 

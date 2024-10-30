@@ -73,6 +73,7 @@ class SessionList(QListWidget):
         font = QFont()
         font.setPointSize(10)
         self.setFont(font)
+        self.setFocusPolicy(Qt.NoFocus)
 
         self.menu = QMenu(self)
         action = self.menu.addAction("新建会话")
