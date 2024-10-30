@@ -31,11 +31,16 @@ class Terminal(QTextEdit, VT100Paser):
         Highlighter(self.scheme, self.document())   # 终端语法高亮
 
         # 快捷键
-        QShortcut(QKeySequence("ALT+C"), self).activated.connect(lambda: self.copy())
-        QShortcut(QKeySequence("ALT+V"), self).activated.connect(lambda: self.paste())
-        QShortcut(QKeySequence("ALT+S"), self).activated.connect(lambda: self.clear())
-        QShortcut(QKeySequence("ALT+F"), self).activated.connect(lambda: self.input())
-        QShortcut(QKeySequence("ALT+I"), self).activated.connect(lambda: self.find())
+        self.shortcut_copy = QKeySequence("ALT+C")
+        self.shortcut_paste = QKeySequence("ALT+V")
+        self.shortcut_clear = QKeySequence("ALT+S")
+        self.shortcut_find = QKeySequence("ALT+F")
+        self.shortcut_input = QKeySequence("ALT+I")
+        QShortcut(self.shortcut_copy, self).activated.connect(lambda: self.copy())
+        QShortcut(self.shortcut_paste, self).activated.connect(lambda: self.paste())
+        QShortcut(self.shortcut_clear, self).activated.connect(lambda: self.clear())
+        QShortcut(self.shortcut_input, self).activated.connect(lambda: self.input())
+        QShortcut(self.shortcut_find, self).activated.connect(lambda: self.find())
 
         # 显示banner
         # banner = pyfiglet.figlet_format("hTerm", font="dos_rebel")
