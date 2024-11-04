@@ -10,7 +10,7 @@ from terminal_base import Terminal
 
 class SerialTerm(Terminal):
     """ 串口终端 """
-    def __init__(self, port, baudrate, bg_img=None, scheme="Horizon Dark"):
+    def __init__(self, port, baudrate, bg_img=None, scheme=None):
         super().__init__(bg_img, scheme)
 
         self.port = port

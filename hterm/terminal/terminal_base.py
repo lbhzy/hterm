@@ -17,15 +17,18 @@ class Terminal(QTextEdit, VT100Paser):
     """ 基于QTextEdit实现的终端小部件 """
     text_added = Signal(str)
 
-    def __init__(self, bg_img=None, scheme="Horizon Dark"):
+    def __init__(self, bg_img=None, scheme=None):
         super().__init__()
 
-        self.bg_img     = bg_img
-        self.scheme     = Color().getScheme(scheme)
-        self.fmt        = QTextCharFormat()
-        self.pos        = [0, 0]
-        self.input_bar  = None
-        self.find_bar   = None
+        self.bg_img = bg_img
+        scheme = scheme if scheme else "Breadog"
+        self.scheme = Color().getScheme(scheme)
+        self.fmt = QTextCharFormat()
+        self.pos = [0, 0]
+        self.input_bar = None
+        self.find_bar = None
+        self.selected_color = QColor("#778899")     # 选中文本背景色
+        self.selected_click = QColor("#BEBEBE")     # 选中文本右键后背景色
 
         self.setupUi()
         Highlighter(self.scheme, self.document())   # 终端语法高亮
@@ -225,7 +228,7 @@ class Terminal(QTextEdit, VT100Paser):
         cursor.select(QTextCursor.WordUnderCursor)
 
         format = QTextCharFormat()
-        format.setBackground(QColor(QColor('#303080')))
+        format.setBackground(self.selected_color)
 
         selection = QTextEdit.ExtraSelection()
         selection.format = format
@@ -239,7 +242,7 @@ class Terminal(QTextEdit, VT100Paser):
         if event.buttons() & Qt.LeftButton:  # 按住鼠标左键移动
             self.setExtraSelections([])
             format = QTextCharFormat()
-            format.setBackground(QColor(0, 0, 180, 200))
+            format.setBackground(self.selected_color)
 
             selection = QTextEdit.ExtraSelection()
             selection.format = format
@@ -295,7 +298,7 @@ class Terminal(QTextEdit, VT100Paser):
         if extra_selected:
             selections = []
             for selection in self.extraSelections():
-                selection.format.setBackground(QColor('#5050b0'))
+                selection.format.setBackground(self.selected_click)
                 selections.append(selection)
             self.setExtraSelections(selections)
 

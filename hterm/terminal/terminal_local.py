@@ -10,7 +10,7 @@ from terminal_base import Terminal
 
 class LocalTerm(Terminal):
     """ 本地程序终端 """
-    def __init__(self, prog: str, bg_img=None, scheme="Horizon Dark"):
+    def __init__(self, prog: str, bg_img=None, scheme=None):
         super().__init__(bg_img, scheme)
 
         self.timer = QTimer(self)
