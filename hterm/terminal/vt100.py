@@ -78,7 +78,7 @@ class VT100Paser:
             
             # 光标控制
             case 'H'|'f':
-                pos = (int(argv[0])-1,int(argv[1])-1) if argv[0] else (0,0)
+                pos = (int(argv[0]),int(argv[1])) if argv[0] else (1,1)
                 self.moveCursor(Cursor.SetPosition, pos=pos)
             case 'A':
                 cnt = int(argv[0]) if argv[0] else 1

@@ -49,6 +49,9 @@ class SSHTerm(Terminal):
         self.ssh.close()
         super().close()
 
+    def resizePty(self, width, height):
+        self.channel.resize_pty(width=width, height=height)
+
     def sendData(self, data):
         if self.connected:
             self.channel.send(data.encode("utf-8"))

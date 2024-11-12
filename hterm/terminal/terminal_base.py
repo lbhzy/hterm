@@ -101,6 +101,7 @@ class Terminal(QTextEdit, VT100Paser):
 
     def display(self, text):
         t0 = time.time()
+        # print(text.encode())
         need_update_scroll_bar = False
         scroll_bar_val = self.verticalScrollBar().value()
         # 开始滚动条就在底部需要更新，开始不在底部保持原始位置
@@ -124,15 +125,24 @@ class Terminal(QTextEdit, VT100Paser):
             end = selection.cursor.selectionEnd()
             selected_text += self.toPlainText()[start:end]
         return selected_text
-    
-    # def paintEvent(self, event):
-    #     painter = QPainter(self.viewport())
-    #     # 根据滚动条位置调整背景图片绘制位置
-    #     painter.drawPixmap(self.rect(), self.bg, QRect(0, -self.verticalScrollBar().value(), self.bg.width(), self.bg.height()))
-    #     super().paintEvent(event)
+
+    def resizePty(self, width, height):
+        pass
+
+    def updatePtySize(self):
+        font_metrics = QFontMetrics(self.font())
+        # font_height = font_metrics.height()
+        font_width = font_metrics.horizontalAdvance("A")
+        line_height = self.cursorRect(self.textCursor()).height()
+        
+        self.pty_height = self.height() // line_height - 1
+        self.pty_width = self.width() // font_width - 5
+        # print(self.pty_height, self.pty_width)
+        self.resizePty(self.pty_width, self.pty_height)
 
     def resizeEvent(self, event: QResizeEvent):
         """ 窗口大小改变事件 """
+        self.updatePtySize()
         ratio = 1
         if self.verticalScrollBar().maximum() > 0:
             ratio = self.verticalScrollBar().value()/self.verticalScrollBar().maximum()
@@ -200,6 +210,7 @@ class Terminal(QTextEdit, VT100Paser):
             if size > 0:
                 font.setPointSize(size)
                 self.setFont(font)
+                self.updatePtySize()
             return
         
         super().wheelEvent(event)
@@ -393,6 +404,17 @@ class Terminal(QTextEdit, VT100Paser):
                 cursor.clearSelection()
         self.setTextCursor(cursor)
 
+    def setCursorColumn(self, cursor, col):
+        """ 将光标移到指定列 """
+        position = cursor.position()
+        diff = col - cursor.block().length()
+        if diff >= 0:
+            cursor.movePosition(QTextCursor.EndOfLine)
+            cursor.insertText(' ' * diff)
+        else:
+            cursor.setPosition(position - cursor.positionInBlock() + col - 1)
+        self.setTextCursor(cursor)
+
     # 重载转义序列解析器中控制终端的方法
     def updateText(self, text: str):
         position = self.textCursor().position()
@@ -486,7 +508,6 @@ class Terminal(QTextEdit, VT100Paser):
     def moveCursor(self, action, cnt=1, pos=(0,0)):
         """(row, col)"""
         cursor = self.textCursor()
-        position = cursor.position()
         if action == Cursor.Up:
             cursor.movePosition(QTextCursor.Up, n=cnt)
         elif action == Cursor.Down:
@@ -494,20 +515,17 @@ class Terminal(QTextEdit, VT100Paser):
         elif action == Cursor.Left:
             cursor.movePosition(QTextCursor.Left, n=cnt)
         elif action == Cursor.Right:
-            cursor.movePosition(QTextCursor.Right, n=cnt)
+            self.setCursorColumn(cursor, cursor.positionInBlock() + 1 + cnt)
         elif action == Cursor.StartOfLine:
             cursor.movePosition(QTextCursor.StartOfLine, n=cnt)
         elif action == Cursor.SetColumn:
-            diff = cnt - cursor.block().length()
-            if diff >= 0:
-                cursor.movePosition(QTextCursor.EndOfLine)
-                cursor.insertText(' ' * diff)
-            else:
-                cursor.setPosition(position - cursor.positionInBlock() + cnt - 1)
+            self.setCursorColumn(cursor, cnt)
         elif action == Cursor.SetPosition:
             cursor.movePosition(QTextCursor.Start)
-            self.moveCursorDown(cursor, pos[0])
-            cursor.movePosition(QTextCursor.Right, n=pos[1])
+            row = pos[0] if pos[0] > 0 else 1
+            col = pos[1] if pos[1] > 0 else 1
+            self.moveCursorDown(cursor, row - 1)
+            self.setCursorColumn(cursor, col)
         self.setTextCursor(cursor)
         self.setCurrentCharFormat(self.fmt) # 防止文本格式受移动后位置的文本格式影响
 
