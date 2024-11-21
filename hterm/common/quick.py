@@ -53,6 +53,11 @@ class QuickDialog(QDialog, Ui_Dialog):
         self.setWindowTitle("快捷命令")
         self.textEdit.setPlaceholderText(MSG0)
 
+        self.addButton.setIcon(qta.icon('mdi.plus'))
+        self.delButton.setIcon(qta.icon('mdi.minus'))
+        self.upButton.setIcon(qta.icon('fa.angle-up'))
+        self.downButton.setIcon(qta.icon('fa.angle-down'))
+
         self.listWidget.currentRowChanged.connect(self.itemChanged)
         self.comboBox.currentIndexChanged.connect(self.typeChanged)
         self.lineEdit.textChanged.connect(self.nameChanged)
@@ -160,7 +165,10 @@ class QuickButton(QPushButton):
         self.content = content
 
         self.setText(name)
-        self.setIcon(qta.icon('mdi6.arrow-up-bold-circle', color="green"))
+        if type_ == "text":
+            self.setIcon(qta.icon('ph.text-t-bold', color="green"))
+        elif type_ == "script":
+            self.setIcon(qta.icon('ph.code-bold', color="blue"))
         # 设置按钮尺寸 适应文本长度
         metrics = QFontMetrics(self.font())
         width = metrics.horizontalAdvance(name)
