@@ -19,6 +19,7 @@ class SSHTerm(Terminal):
         self.password = password
 
         self.connected = False
+        self.channel = None
 
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
@@ -50,7 +51,8 @@ class SSHTerm(Terminal):
         super().close()
 
     def resizePty(self, width, height):
-        self.channel.resize_pty(width=width, height=height)
+        if self.channel:
+            self.channel.resize_pty(width=width, height=height)
 
     def sendData(self, data):
         if self.connected:
