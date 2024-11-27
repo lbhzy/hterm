@@ -1,0 +1,8 @@
+terminal:
+  fonts: 
+    - "Consolas"
+    - "Microsoft YaHei UI"
+  size: 14
+  background: true
+  image: bg1.png
+  scheme: Breadog

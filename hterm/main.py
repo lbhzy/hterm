@@ -16,6 +16,7 @@ from common.trigger import Trigger, TriggerDialog
 from common.quick import QuickBar
 from common.session import SessionDialog
 from common.config import Config
+from common.setting import SettingDialog
 from terminal.terminal_ssh import SSHTerm
 from terminal.terminal_local import LocalTerm
 from terminal.terminal_serial import SerialTerm
@@ -49,6 +50,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar_action.triggered.connect(lambda check: self.statusbar.setVisible(check))
         self.trigger_action.triggered.connect(self.openTriggerDialog)
         self.about_action.triggered.connect(lambda: QMessageBox.information(self, "关于Hterm", "Power by lbhzy"+10*" "))
+        self.setting.triggered.connect(lambda: SettingDialog(self).show())
 
         # 快捷命令栏创建
         self.quick_bar = QuickBar(self)
