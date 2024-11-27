@@ -51,7 +51,8 @@ class QuickDialog(QDialog, Ui_Dialog):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowTitle("快捷命令")
-        self.textEdit.setPlaceholderText(MSG0)
+        self.setWindowFlag(Qt.WindowMaximizeButtonHint)
+        self.plainTextEdit.setPlaceholderText(MSG0)
 
         self.addButton.setIcon(qta.icon('mdi.plus'))
         self.delButton.setIcon(qta.icon('mdi.minus'))
@@ -61,7 +62,7 @@ class QuickDialog(QDialog, Ui_Dialog):
         self.listWidget.currentRowChanged.connect(self.itemChanged)
         self.comboBox.currentIndexChanged.connect(self.typeChanged)
         self.lineEdit.textChanged.connect(self.nameChanged)
-        self.textEdit.textChanged.connect(self.contentChanged)
+        self.plainTextEdit.textChanged.connect(self.contentChanged)
         self.addButton.clicked.connect(self.add)
         self.delButton.clicked.connect(self.delete)
         self.upButton.clicked.connect(self.up)
@@ -77,15 +78,15 @@ class QuickDialog(QDialog, Ui_Dialog):
         index = self.listWidget.currentRow()
         if index < 0:
             return
-        text = self.textEdit.toPlainText()
+        text = self.plainTextEdit.toPlainText()
         self.quicks[index]["content"] = text
 
     def typeChanged(self, type_):
         index = self.listWidget.currentRow()
         if type_ == 1:
-            self.textEdit.setPlaceholderText(MSG1)
+            self.plainTextEdit.setPlaceholderText(MSG1)
         else:
-            self.textEdit.setPlaceholderText(MSG0)
+            self.plainTextEdit.setPlaceholderText(MSG0)
         if index < 0:
             return
         self.quicks[index]["type"] = 'script' if type_ else 'text'
@@ -100,14 +101,14 @@ class QuickDialog(QDialog, Ui_Dialog):
     def itemChanged(self, index):
         if self.listWidget.currentRow() < 0:
             self.lineEdit.setText("")
-            self.textEdit.setText("")
+            self.plainTextEdit.setPlainText("")
             return
         self.lineEdit.setText(self.quicks[index]["name"])
         self.comboBox.setCurrentIndex(0 if self.quicks[index]["type"] == "text" else 1)
-        self.textEdit.setText(self.quicks[index]["content"])
+        self.plainTextEdit.setPlainText(self.quicks[index]["content"])
     
     def testRun(self):
-        text = self.textEdit.toPlainText()
+        text = self.plainTextEdit.toPlainText()
         if self.comboBox.currentIndex() == 1:
             text = runPythonString(self, text)
         if text:

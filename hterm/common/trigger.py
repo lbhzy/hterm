@@ -81,14 +81,15 @@ class TriggerDialog(QDialog, Ui_Dialog):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowTitle("触发器管理")
+        self.setWindowFlag(Qt.WindowMaximizeButtonHint)
 
-        self.textEdit.setPlaceholderText(MSG0)
+        self.plainTextEdit.setPlaceholderText(MSG0)
         self.listWidget.itemChanged.connect(self.itemChanged)
         self.listWidget.currentRowChanged.connect(self.currentRowChanged)
         self.name_edit.textChanged.connect(self.nameChanged)
         self.pattern_edit.textChanged.connect(self.patternChanged)
         self.type_combobox.currentIndexChanged.connect(self.typeChanged)
-        self.textEdit.textChanged.connect(self.contentChanged)
+        self.plainTextEdit.textChanged.connect(self.contentChanged)
         self.add_button.clicked.connect(self.add)
         self.del_button.clicked.connect(self.delete)
 
@@ -113,9 +114,9 @@ class TriggerDialog(QDialog, Ui_Dialog):
     def typeChanged(self, type_):
         row = self.listWidget.currentRow()
         if type_ == 1:
-            self.textEdit.setPlaceholderText(MSG1)
+            self.plainTextEdit.setPlaceholderText(MSG1)
         else:
-            self.textEdit.setPlaceholderText(MSG0)
+            self.plainTextEdit.setPlaceholderText(MSG0)
         if row < 0:
             return
         self.triggers[row]["type"] = 'script' if type_ else 'text'
@@ -130,20 +131,20 @@ class TriggerDialog(QDialog, Ui_Dialog):
         row = self.listWidget.currentRow()
         if row < 0:
             return
-        text = self.textEdit.toPlainText()
+        text = self.plainTextEdit.toPlainText()
         self.triggers[row]["content"] = text
 
     def currentRowChanged(self, row):
         if row < 0:
             self.name_edit.setText("")
             self.pattern_edit.setText("")
-            self.textEdit.setText("")
+            self.plainTextEdit.setPlainText("")
             return
         # print(self.triggers[row])
         self.name_edit.setText(self.triggers[row]["name"])
         self.pattern_edit.setText(self.triggers[row]["pattern"])
         self.type_combobox.setCurrentIndex(0 if self.triggers[row]["type"] == "text" else 1)
-        self.textEdit.setText(self.triggers[row]["content"])
+        self.plainTextEdit.setPlainText(self.triggers[row]["content"])
 
     def itemChanged(self, item):
         row = self.listWidget.row(item)

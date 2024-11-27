@@ -18,7 +18,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QComboBox, QDialog,
     QDialogButtonBox, QFormLayout, QHBoxLayout, QLabel,
     QLineEdit, QListWidget, QListWidgetItem, QPushButton,
-    QSizePolicy, QTextEdit, QVBoxLayout, QWidget)
+    QSizePolicy, QVBoxLayout, QWidget)
+
+from general import CodeEdit
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -38,6 +40,7 @@ class Ui_Dialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.listWidget.sizePolicy().hasHeightForWidth())
         self.listWidget.setSizePolicy(sizePolicy)
+        self.listWidget.setSpacing(1)
 
         self.verticalLayout_2.addWidget(self.listWidget)
 
@@ -101,16 +104,6 @@ class Ui_Dialog(object):
 
         self.formLayout.setWidget(4, QFormLayout.LabelRole, self.label_5)
 
-        self.textEdit = QTextEdit(Dialog)
-        self.textEdit.setObjectName(u"textEdit")
-        font1 = QFont()
-        font1.setFamilies([u"Consolas"])
-        font1.setPointSize(11)
-        self.textEdit.setFont(font1)
-        self.textEdit.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
-
-        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.textEdit)
-
         self.label_4 = QLabel(Dialog)
         self.label_4.setObjectName(u"label_4")
 
@@ -122,6 +115,11 @@ class Ui_Dialog(object):
         self.type_combobox.setObjectName(u"type_combobox")
 
         self.formLayout.setWidget(3, QFormLayout.FieldRole, self.type_combobox)
+
+        self.plainTextEdit = CodeEdit(Dialog)
+        self.plainTextEdit.setObjectName(u"plainTextEdit")
+
+        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.plainTextEdit)
 
 
         self.horizontalLayout.addLayout(self.formLayout)

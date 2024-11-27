@@ -18,14 +18,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QComboBox, QDialog,
     QDialogButtonBox, QFormLayout, QHBoxLayout, QLabel,
     QLineEdit, QListWidget, QListWidgetItem, QPushButton,
-    QSizePolicy, QTextEdit, QToolButton, QVBoxLayout,
-    QWidget)
+    QSizePolicy, QToolButton, QVBoxLayout, QWidget)
+
+from general import CodeEdit
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(713, 466)
+        Dialog.resize(767, 466)
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.horizontalLayout = QHBoxLayout()
@@ -40,6 +41,7 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.listWidget.sizePolicy().hasHeightForWidth())
         self.listWidget.setSizePolicy(sizePolicy)
         self.listWidget.setMaximumSize(QSize(150, 16777215))
+        self.listWidget.setSpacing(1)
 
         self.verticalLayout_2.addWidget(self.listWidget)
 
@@ -79,16 +81,16 @@ class Ui_Dialog(object):
 
         self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_2)
 
-        self.label = QLabel(Dialog)
-        self.label.setObjectName(u"label")
-
-        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.label)
-
         self.lineEdit = QLineEdit(Dialog)
         self.lineEdit.setObjectName(u"lineEdit")
         self.lineEdit.setMinimumSize(QSize(0, 23))
 
         self.formLayout.setWidget(0, QFormLayout.FieldRole, self.lineEdit)
+
+        self.label = QLabel(Dialog)
+        self.label.setObjectName(u"label")
+
+        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.label)
 
         self.comboBox = QComboBox(Dialog)
         self.comboBox.addItem("")
@@ -109,20 +111,15 @@ class Ui_Dialog(object):
 
         self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_3)
 
-        self.textEdit = QTextEdit(Dialog)
-        self.textEdit.setObjectName(u"textEdit")
-        font = QFont()
-        font.setFamilies([u"Consolas"])
-        font.setPointSize(11)
-        self.textEdit.setFont(font)
-        self.textEdit.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
-
-        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.textEdit)
-
         self.pushButton = QPushButton(Dialog)
         self.pushButton.setObjectName(u"pushButton")
 
         self.formLayout.setWidget(3, QFormLayout.FieldRole, self.pushButton)
+
+        self.plainTextEdit = CodeEdit(Dialog)
+        self.plainTextEdit.setObjectName(u"plainTextEdit")
+
+        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.plainTextEdit)
 
 
         self.horizontalLayout.addLayout(self.formLayout)
