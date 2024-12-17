@@ -62,7 +62,7 @@ class SettingDialog(QDialog, Ui_Dialog):
             if self.comboBox.currentText():
                 image = os.path.join(self.images_dir, self.comboBox.currentText())
         self.term = Terminal(image, self.listWidget.currentItem().text())
-        self.gridLayout.addWidget(self.term, 0, 1)
+        self.gridLayout.addWidget(self.term, 0, 1, 1, 3)
         font = QFont()
         font.setPointSize(self.spinBox.value())
         font.setFamily(self.fontComboBox_2.currentText())

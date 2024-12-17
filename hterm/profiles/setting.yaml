@@ -3,6 +3,6 @@ terminal:
     - "Consolas"
     - "Microsoft YaHei UI"
   size: 14
-  background: true
+  background: false
   image: bg1.png
   scheme: Breadog

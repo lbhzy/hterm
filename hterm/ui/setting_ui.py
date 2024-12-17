@@ -16,10 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDialog,
-    QFontComboBox, QFormLayout, QGridLayout, QHBoxLayout,
-    QHeaderView, QLabel, QListWidget, QListWidgetItem,
-    QSizePolicy, QSpinBox, QStackedWidget, QTreeWidget,
-    QTreeWidgetItem, QWidget)
+    QFontComboBox, QGridLayout, QHBoxLayout, QHeaderView,
+    QLabel, QListWidget, QListWidgetItem, QSizePolicy,
+    QSpinBox, QStackedWidget, QTreeWidget, QTreeWidgetItem,
+    QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -48,62 +48,46 @@ class Ui_Dialog(object):
         self.page.setObjectName(u"page")
         self.gridLayout = QGridLayout(self.page)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.formLayout = QFormLayout()
-        self.formLayout.setObjectName(u"formLayout")
         self.label = QLabel(self.page)
         self.label.setObjectName(u"label")
 
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label)
+        self.gridLayout.addWidget(self.label, 1, 1, 1, 1)
+
+        self.label_3 = QLabel(self.page)
+        self.label_3.setObjectName(u"label_3")
+
+        self.gridLayout.addWidget(self.label_3, 3, 1, 1, 1)
+
+        self.fontComboBox = QFontComboBox(self.page)
+        self.fontComboBox.setObjectName(u"fontComboBox")
+
+        self.gridLayout.addWidget(self.fontComboBox, 2, 2, 1, 1)
 
         self.spinBox = QSpinBox(self.page)
         self.spinBox.setObjectName(u"spinBox")
         self.spinBox.setMaximumSize(QSize(80, 16777215))
 
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.spinBox)
-
-        self.fontComboBox = QFontComboBox(self.page)
-        self.fontComboBox.setObjectName(u"fontComboBox")
-
-        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.fontComboBox)
-
-        self.label_2 = QLabel(self.page)
-        self.label_2.setObjectName(u"label_2")
-
-        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.label_2)
-
-        self.label_3 = QLabel(self.page)
-        self.label_3.setObjectName(u"label_3")
-
-        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_3)
+        self.gridLayout.addWidget(self.spinBox, 1, 2, 1, 1)
 
         self.fontComboBox_2 = QFontComboBox(self.page)
         self.fontComboBox_2.setObjectName(u"fontComboBox_2")
 
-        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.fontComboBox_2)
+        self.gridLayout.addWidget(self.fontComboBox_2, 3, 2, 1, 1)
 
+        self.label_2 = QLabel(self.page)
+        self.label_2.setObjectName(u"label_2")
 
-        self.gridLayout.addLayout(self.formLayout, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.label_2, 2, 1, 1, 1)
 
-        self.label_4 = QLabel(self.page)
-        self.label_4.setObjectName(u"label_4")
-
-        self.gridLayout.addWidget(self.label_4, 4, 1, 1, 1)
-
-        self.horizontalLayout_2 = QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.checkBox = QCheckBox(self.page)
         self.checkBox.setObjectName(u"checkBox")
 
-        self.horizontalLayout_2.addWidget(self.checkBox)
+        self.gridLayout.addWidget(self.checkBox, 4, 1, 1, 1)
 
         self.comboBox = QComboBox(self.page)
         self.comboBox.setObjectName(u"comboBox")
 
-        self.horizontalLayout_2.addWidget(self.comboBox)
-
-        self.horizontalLayout_2.setStretch(1, 1)
-
-        self.gridLayout.addLayout(self.horizontalLayout_2, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.comboBox, 4, 2, 1, 1)
 
         self.listWidget = QListWidget(self.page)
         self.listWidget.setObjectName(u"listWidget")
@@ -113,7 +97,12 @@ class Ui_Dialog(object):
         sizePolicy1.setHeightForWidth(self.listWidget.sizePolicy().hasHeightForWidth())
         self.listWidget.setSizePolicy(sizePolicy1)
 
-        self.gridLayout.addWidget(self.listWidget, 5, 1, 1, 1)
+        self.gridLayout.addWidget(self.listWidget, 2, 3, 4, 1)
+
+        self.label_4 = QLabel(self.page)
+        self.label_4.setObjectName(u"label_4")
+
+        self.gridLayout.addWidget(self.label_4, 1, 3, 1, 1)
 
         self.stackedWidget.addWidget(self.page)
         self.page_2 = QWidget()
@@ -125,9 +114,6 @@ class Ui_Dialog(object):
 #if QT_CONFIG(shortcut)
         self.label_4.setBuddy(self.label_4)
 #endif // QT_CONFIG(shortcut)
-        QWidget.setTabOrder(self.treeWidget, self.spinBox)
-        QWidget.setTabOrder(self.spinBox, self.fontComboBox)
-        QWidget.setTabOrder(self.fontComboBox, self.fontComboBox_2)
 
         self.retranslateUi(Dialog)
 
@@ -151,9 +137,9 @@ class Ui_Dialog(object):
         self.treeWidget.setSortingEnabled(__sortingEnabled)
 
         self.label.setText(QCoreApplication.translate("Dialog", u"\u5b57\u4f53\u5927\u5c0f\uff1a", None))
-        self.label_2.setText(QCoreApplication.translate("Dialog", u"\u82f1\u6587\u5b57\u4f53", None))
         self.label_3.setText(QCoreApplication.translate("Dialog", u"\u4e2d\u6587\u5b57\u4f53", None))
-        self.label_4.setText(QCoreApplication.translate("Dialog", u"\u914d\u8272\u65b9\u6848", None))
+        self.label_2.setText(QCoreApplication.translate("Dialog", u"\u82f1\u6587\u5b57\u4f53", None))
         self.checkBox.setText(QCoreApplication.translate("Dialog", u"\u542f\u7528\u80cc\u666f\u56fe\u7247", None))
+        self.label_4.setText(QCoreApplication.translate("Dialog", u"\u914d\u8272\u65b9\u6848", None))
     # retranslateUi
 
