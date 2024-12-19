@@ -1,8 +1,8 @@
 @echo off
 
-pyinstaller -y ^
+pyinstaller -yw ^
 -i ../images/icon.png ^
--p hterm/terminal;hterm/ui ^
+-p hterm/terminal;hterm/ui;hterm/common ^
 --specpath build ^
 --collect-data winpty ^
 -n Hterm ^
