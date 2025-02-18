@@ -14,8 +14,8 @@ def build():
     run(params)
 
 def copy_resources():
-    shutil.copytree("hterm\images", "dist\hterm\images")
-    shutil.copytree("hterm\schemes", "dist\hterm\schemes")
+    shutil.copytree("hterm/images", "dist/hterm/images")
+    shutil.copytree("hterm/schemes", "dist/hterm/schemes")
 
 
 if __name__ == "__main__":
