@@ -17,8 +17,12 @@ def copy_resources():
     shutil.copytree("hterm/images", "dist/hterm/images")
     shutil.copytree("hterm/schemes", "dist/hterm/schemes")
 
+def compress():
+    shutil.make_archive("dist/hterm", "zip", "dist/", "hterm")
+
 
 if __name__ == "__main__":
     build()
     copy_resources()
+    compress()
     
