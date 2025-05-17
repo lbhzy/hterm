@@ -190,8 +190,13 @@ if __name__ == "__main__":
     app = QApplication()
 
     app.setStyle("fusion")
+    root_path = os.path.dirname(os.path.abspath(sys.argv[0]))
+    font_path = os.path.join(root_path, "fonts")
+    with os.scandir(font_path) as entries:
+        for entry in entries:
+            QFontDatabase.addApplicationFont(entry.path)
     font = QFont()
-    font.setFamilies(["Consolas", "Microsoft YaHei UI"])
+    font.setFamilies(["Roboto Mono", "HarmonyOS Sans SC"])
     app.setFont(font)
 
     w = MainWindow()
