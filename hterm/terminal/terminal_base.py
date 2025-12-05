@@ -3,8 +3,8 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
 import os
+import sys
 import time
-import winsound
 import pyfiglet
 import qtawesome as qta
 
@@ -530,7 +530,9 @@ class Terminal(QTextEdit, VT100Paser):
         self.setCurrentCharFormat(self.fmt) # 防止文本格式受移动后位置的文本格式影响
 
     def ringBell(self):
-        winsound.PlaySound("SystemHand", winsound.SND_ALIAS | winsound.SND_ASYNC)
+        if sys.platform == 'win32':
+            import winsound
+            winsound.PlaySound("SystemHand", winsound.SND_ALIAS | winsound.SND_ASYNC)
 
 if __name__ == "__main__":
 
